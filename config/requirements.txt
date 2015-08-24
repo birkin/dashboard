@@ -1,2 +1,0 @@
-Django==1.8.4
-shellvars-py==0.1.2
