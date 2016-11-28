@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 from dashboard_app.models import Widget, WidgetHelper, ChartMaker, MinichartMaker
 from django.test import TestCase
 

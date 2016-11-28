@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import unicode_literals
+
 import datetime, json, logging, os, pprint, itertools
 from django.conf import settings as project_settings
 from django.core.urlresolvers import reverse
