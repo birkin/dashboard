@@ -19,27 +19,23 @@ import json, os
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = unicode( os.path.dirname(os.path.dirname(__file__)) )
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DSHBRD__SECRET_KEY']
+SECRET_KEY = unicode( os.environ['DSHBRD__SECRET_KEY'] )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-temp_DEBUG = os.environ['DSHBRD__DEBUG']
-assert temp_DEBUG in [ 'True', '' ], Exception( 'DEBUG env setting is, "%s"; must be either "True" or ""' % temp_DEBUG )
-DEBUG = bool( temp_DEBUG )
-
-TEMPLATE_DEBUG = DEBUG
+DEBUG = json.loads( os.environ['DSHBRD__DEBUG_JSON'] )  # will be True or False
 
 ALLOWED_HOSTS = json.loads( os.environ['DSHBRD__ALLOWED_HOSTS'] )  # list
 
 
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,39 +44,52 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dashboard_app',
-)
+]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-)
+]
 
 ROOT_URLCONF = 'config.urls'
 
-WSGI_APPLICATION = 'config.wsgi.application'
+TEMPLATES = json.loads( os.environ['DSHBRD__TEMPLATES_JSON'] )  # list of dict(s)
+
+WSGI_APPLICATION = 'config.passenger_wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+# https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': os.environ['DSHBRD__DATABASES_ENGINE'],
-        'NAME': os.environ['DSHBRD__DATABASES_NAME'],
-        'USER': os.environ['DSHBRD__DATABASES_USER'],
-        'PASSWORD': os.environ['DSHBRD__DATABASES_PASSWORD'],
-        'HOST': os.environ['DSHBRD__DATABASES_HOST'],
-        'PORT': os.environ['DSHBRD__DATABASES_PORT'],
-    }
-}
+DATABASES = json.loads( os.environ['DSHBRD__DATABASES_JSON'] )
+
+
+# Password validation
+# https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/1.6/topics/i18n/
+# https://docs.djangoproject.com/en/1.10/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -94,25 +103,20 @@ USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
+# https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = os.environ['DSHBRD__STATIC_URL']
-STATIC_ROOT = os.environ['DSHBRD__STATIC_ROOT']  # needed for collectstatic command
-
-
-# Templates
-
-TEMPLATE_DIRS = json.loads( os.environ['DSHBRD__TEMPLATE_DIRS'] )  # list
+STATIC_URL = unicode( os.environ['DSHBRD__STATIC_URL'] )
+STATIC_ROOT = unicode( os.environ['DSHBRD__STATIC_ROOT'] )  # needed for collectstatic command
 
 
 # Email
-EMAIL_HOST = os.environ['DSHBRD__EMAIL_HOST']
+EMAIL_HOST = unicode( os.environ['DSHBRD__EMAIL_HOST'] )
 EMAIL_PORT = int( os.environ['DSHBRD__EMAIL_PORT'] )
 
 
 # sessions
 
-# <https://docs.djangoproject.com/en/1.6/ref/settings/#std:setting-SESSION_SAVE_EVERY_REQUEST>
+# <https://docs.djangoproject.com/en/1.10/ref/settings/#std:setting-SESSION_SAVE_EVERY_REQUEST>
 # Thinking: not that many concurrent users, and no pages where session info isn't required, so overhead is reasonable.
 SESSION_SAVE_EVERY_REQUEST = True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -124,15 +128,15 @@ LOGGING = {
     'disable_existing_loggers': True,
     'formatters': {
         'standard': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
+            'format': "[%(asctime)s] %(levelname)s [%(module)s-%(funcName)s()::%(lineno)d] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
     },
     'handlers': {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',  # note: configure server to use system's log-rotate to avoid permissions issues
-            'filename': os.environ.get(u'DSHBRD__LOG_PATH'),
+            'filename': unicode( os.environ.get(u'DSHBRD__LOG_PATH') ),
             'formatter': 'standard',
         },
         'console':{
@@ -144,8 +148,7 @@ LOGGING = {
     'loggers': {
         'dashboard_app': {
             'handlers': ['logfile'],
-            'level': os.environ.get(u'DSHBRD__LOG_LEVEL'),
+            'level': unicode( os.environ.get(u'DSHBRD__LOG_LEVEL') ),
         },
     }
 }
-
