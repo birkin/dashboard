@@ -20,12 +20,13 @@ minichart_maker = models.MinichartMaker()
 
 def info( request ):
     """ Returns info page. """
-    first_widget = Widget.objects.all()[0]
-    context = {
-        'email_general_help': os.environ['DSHBRD__EMAIL_GENERAL_HELP'],
-        'first_widget_url': reverse( 'widget_url', kwargs={'identifier': first_widget.slug} )
-        }
-    return render( request, 'dashboard_app_templates/info.html', context )
+    return HttpResponse( 'testing' )
+    # first_widget = Widget.objects.all()[0]
+    # context = {
+    #     'email_general_help': os.environ['DSHBRD__EMAIL_GENERAL_HELP'],
+    #     'first_widget_url': reverse( 'widget_url', kwargs={'identifier': first_widget.slug} )
+    #     }
+    # return render( request, 'dashboard_app_templates/info.html', context )
 
 
 def widget( request, identifier ):
