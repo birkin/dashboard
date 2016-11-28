@@ -16,7 +16,7 @@ Prepares application environment.
 Variables assume project setup like:
 dashboard_stuff
     dashboard_project
-        dashboard_config
+        config
         dashboard_app
     env_dshb
 """
@@ -31,7 +31,7 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 ACTIVATE_FILE = os.path.abspath( u'%s/../../env_dshb/bin/activate_this.py' % current_directory )
 PROJECT_DIR = os.path.abspath( u'%s/../../dashboard_project' % current_directory )
 PROJECT_ENCLOSING_DIR = os.path.abspath( u'%s/../..' % current_directory )
-SETTINGS_MODULE = u'dashboard_config.settings'
+SETTINGS_MODULE = u'config.settings'
 SITE_PACKAGES_DIR = os.path.abspath( u'%s/../../env_dshb/lib/python2.6/site-packages' % current_directory )
 
 ## virtualenv
