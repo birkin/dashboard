@@ -152,3 +152,11 @@ LOGGING = {
         },
     }
 }
+
+
+## app-level settings ##
+
+EMAIL_GENERAL_HELP = unicode( os.environ['DSHBRD__EMAIL_GENERAL_HELP'] )
+
+
+## EOF ##
