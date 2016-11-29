@@ -53,9 +53,31 @@
             title: "Monthly count of easyBorrow requests \ndisposed of either through a josiah-redirect, or borrowdirect, or illiad.",
             width: 1000,
             height: 500,
+            lineWidth: 5,
             trendlines: {
-              0: {type: 'linear', color: '#111', opacity: .3},
-            }
+              0: {
+                type: 'linear',
+                color: 'grey',
+                lineWidth: 5,
+                // pointSize: 5,
+                opacity: 0.3,
+                // showR2: true,
+                visibleInLegend: true,
+                labelInLegend: 'trend',
+                pointsVisible: false,
+                },
+            },
+            curveType: 'function',
+            legend: {
+                position: 'bottom',  // 'none'
+            },
+            pointSize: 5,
+            // chartArea:{
+            //     left: 200,
+            //     top: 200,
+            //     width:'50%',
+            //     height:'75%'
+            // },
             // hAxis: {
             //   title: 'foo'
             // },
