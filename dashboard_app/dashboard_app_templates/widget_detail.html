@@ -12,6 +12,8 @@
 
 	<div id="chart_div"></div>
 
+    <hr/>
+
 	<div id="chart_info">
 		<ul>
 			<li>Data contact: <a href="mailto:{{ widget.data_contact_email_address }}">{{ widget.data_contact_name }}</a></li>
@@ -81,9 +83,10 @@
             // hAxis: {
             //   title: 'foo'
             // },
-            // vAxis: {
-            //   title: 'bar'
-            // },
+            vAxis: {
+              // title: 'bar',
+              maxValue: 4172,  // 5% over max count
+            },
             // colors: ['red'], // line-color
             // backgroundColor: '',
         };
