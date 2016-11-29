@@ -2,10 +2,33 @@
 
 from __future__ import unicode_literals
 
+import numpy
 from dashboard_app.models import Widget, WidgetHelper, ChartMaker, MinichartMaker
 from django.test import TestCase
+from lib import misc
 
 widget_helper = WidgetHelper()
+
+
+class SlopeCalculatorTest(TestCase):
+    """ Tests lib.misc.calculate_slope() """
+
+    def test_calculate_slope__simple(self):
+        """ Tests simple array. """
+        x_list = [ 1, 2, 3 ]
+        y_list = [ 1, 2, 3 ]
+        return_dct = misc.calculate_slope( x_list, y_list )
+        self.assertEqual( int, type(return_dct['slope_rounded']) )
+        self.assertEqual( numpy.float64, type(return_dct['slope']) )
+        self.assertEqual( {'slope': 1.0, 'slope_rounded': 1}, return_dct  )
+
+    def test_calculate_slope__real(self):
+        """ Tests simple array. """
+        x_list = [ 0, 1, 2, 3, 4, 5 ]
+        y_list = [ 3974, 2923, 3138, 1660, 3631, 3054 ]
+        self.assertEqual( {'slope': -112.97142857142858, 'slope_rounded': -113}, misc.calculate_slope(x_list, y_list) )
+
+    # end class SlopeCalculatorTest
 
 
 class WidgetHelperTest(TestCase):
