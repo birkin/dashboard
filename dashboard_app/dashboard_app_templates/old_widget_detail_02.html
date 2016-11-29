@@ -1,12 +1,6 @@
 {% load humanize %}
 
-<html>
-
-
-
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
 
 <div id="widget_detail">
 
@@ -18,12 +12,18 @@
 			{% if widget.more_info_url %}
 			<li>More info: <a href="{{ widget.more_info_url }}">{{ widget.more_info_url }}</a></li>
 			{% endif %}
-			<li>Widget data: <a href="{{ host }}feeds/widget_data/{{ widget.slug }}/">{{ host }}feeds/widget_data/{{ widget.slug }}/</a></li>
+			<li>RSS feed of data: <a href="{{ host }}feeds/widget_data/{{ widget.slug }}/">{{ host }}feeds/widget_data/{{ widget.slug }}/</a></li>
 			<li>Widget url: <a href="{{ host }}widget/{{ widget.slug }}/">{{ host }}widget/{{ widget.slug }}/</a></li>
 		</ul>
 	</div>
 
 </div> <!-- end div id="widget_detail" -->
+
+
+
+
+
+
 
 
 
@@ -49,34 +49,31 @@
             [new Date(2015, 2), 3054]
         ]);
 
-        var options = {
-            title: "Monthly count of easyBorrow requests \ndisposed of either through a josiah-redirect, or borrowdirect, or illiad.",
-            width: 1000,
+        var materialOptions = {
+            chart: {
+                title: 'Monthly count of easyborrow requests disposed of either through a josiah-redirect, or borrowdirect, or illiad.'
+            },
+            width: 900,
             height: 500,
-            trendlines: {
-              0: {type: 'linear', color: '#111', opacity: .3},
+            series: {
+                // Gives each series an axis name that matches the Y-axis below.
+                0: {axis: 'Count'},
+            },
+            axes: {
+                // Adds labels to each axis; they don't have to match the axis names.
+                y: {
+                    Count: {label: 'number of requests'},
+                },
             }
-            // hAxis: {
-            //   title: 'foo'
-            // },
-            // vAxis: {
-            //   title: 'bar'
-            // },
-            // colors: ['red'], // line-color
-            // backgroundColor: '',
         };
 
-        function drawChart() {
-            var chart = new google.visualization.LineChart( chartDiv );
-            chart.draw( data, options );
+        function drawMaterialChart() {
+            var materialChart = new google.charts.Line(chartDiv);
+            materialChart.draw(data, materialOptions);
         }
 
-        drawChart();
+        drawMaterialChart();
 
     } // end function drawChart()
 
 </script>
-
-
-
-</html>
