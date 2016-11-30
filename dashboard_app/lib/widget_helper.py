@@ -14,7 +14,12 @@ class WidgetPrepper(object):
     def build_context( self, widget ):
         """ Preps widget context.
             Called by views.widget() """
-        return {}
+        data_lst = json.loads( widget.data_points )
+        context = {
+            'contact_email': widget.data_contact_email_address,
+            'data': data_lst
+            }
+        return context
 
     def build_json_widget_output( self, widget, callback, context ):
         """ Preps json for response.

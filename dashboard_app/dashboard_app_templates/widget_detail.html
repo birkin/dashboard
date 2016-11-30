@@ -39,16 +39,28 @@
         var button = document.getElementById('change-chart');
         var chartDiv = document.getElementById('chart_div');
 
+        // var data = new google.visualization.DataTable();
+        // data.addColumn('date', 'Month');
+        // data.addColumn('number', "easyBorrow requests");
+        // data.addRows([
+        //     [new Date(2014, 9), 3974],
+        //     [new Date(2014, 10), 2923],
+        //     [new Date(2014, 11), 3138],
+        //     [new Date(2014, 12), 1660],
+        //     [new Date(2015, 1), 3631],
+        //     [new Date(2015, 2), 3054]
+        // ]);
+
         var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Month');
+        data.addColumn('number', 'not shown; x-axis increments');
         data.addColumn('number', "easyBorrow requests");
         data.addRows([
-            [new Date(2014, 9), 3974],
-            [new Date(2014, 10), 2923],
-            [new Date(2014, 11), 3138],
-            [new Date(2014, 12), 1660],
-            [new Date(2015, 1), 3631],
-            [new Date(2015, 2), 3054]
+            [0, 3974],
+            [1, 2923],
+            [2, 3138],
+            [3, 1660],
+            [4, 3631],
+            [5, 3054],
         ]);
 
         var options = {
@@ -83,6 +95,16 @@
             // hAxis: {
             //   title: 'foo'
             // },
+            hAxis: {
+                ticks: [ // labels for x-axis points
+                    {v:0, f:'2014-09'},
+                    {v:1, f:'2014-10'},
+                    {v:2, f:'2014-11'},
+                    {v:3, f:'2014-12'},
+                    {v:4, f:'2015-01'},
+                    {v:5, f:'2015-02'},
+                    ]
+                },
             vAxis: {
               // title: 'bar',
               maxValue: 4172,  // 5% over max count
