@@ -20,24 +20,20 @@ minichart_maker = models.MinichartMaker()
 
 def info( request ):
     """ Returns info page. """
-    return HttpResponse( 'testing' )
-    # first_widget = Widget.objects.all()[0]
-    # context = {
-    #     'email_general_help': os.environ['DSHBRD__EMAIL_GENERAL_HELP'],
-    #     'first_widget_url': reverse( 'widget_url', kwargs={'identifier': first_widget.slug} )
-    #     }
-    # return render( request, 'dashboard_app_templates/info.html', context )
+    return HttpResponse( 'This page will display "About" info, or redirect to the github ReadMe.' )
+
 
 def widgets( request ):
     """ Displays default page of widgets. """
     return HttpResponse( 'This page will display a summary "small-view" of all the widgets.' )
 
+
 def widget( request, identifier ):
     """ Displays requested widget. """
-    # from django.shortcuts import get_object_or_404
     widget = get_object_or_404( Widget, slug=identifier )
-    ( chart_values, chart_percentages, chart_range, chart_keys ) = chart_maker.prep_data( widget.data_points )
-    gchart_detail_url = chart_maker.prep_gchart_detail_url()
+    log.debug( 'widget found for identifier, `{}`'.format(identifier) )
+    # ( chart_values, chart_percentages, chart_range, chart_keys ) = chart_maker.prep_data( widget.data_points )
+    # gchart_detail_url = chart_maker.prep_gchart_detail_url()
     jdict = widget.get_jdict( request.build_absolute_uri() )
     if request.GET.get( 'format', None ) == 'json':
         output = json.dumps( jdict, sort_keys=True, indent=2 )
@@ -46,13 +42,14 @@ def widget( request, identifier ):
         return HttpResponse( output, content_type = 'application/javascript; charset=utf-8' )
     else:
         # return HttpResponse( jdict['data_main']['title'] )
-        context = {
-            'widget': widget,
-            'detailchart_percentages': chart_percentages,
-            'detailchart_range': chart_range,
-            'detailchart_keys': chart_keys,
-            'data_index': 0  # so url can look 1-based, whereas google chart-api is zero-based
-            }
+        # context = {
+        #     'widget': widget,
+        #     'detailchart_percentages': chart_percentages,
+        #     'detailchart_range': chart_range,
+        #     'detailchart_keys': chart_keys,
+        #     'data_index': 0  # so url can look 1-based, whereas google chart-api is zero-based
+        #     }
+        context = {}
         return render( request, 'dashboard_app_templates/widget_detail.html', context )
 
 
@@ -88,7 +85,7 @@ def widget( request, identifier ):
 def request_widget( request ):
     """ STUB
         Displays/handles form for requesting a widget. """
-    return HttpResponse( 'request-widget url' )
+    return HttpResponse( 'This page will bring up a form for a user to request a widget.' )
 
 
 def tag( request, tag ):
