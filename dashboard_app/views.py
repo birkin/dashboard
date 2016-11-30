@@ -28,6 +28,9 @@ def info( request ):
     #     }
     # return render( request, 'dashboard_app_templates/info.html', context )
 
+def widgets( request ):
+    """ Displays default page of widgets. """
+    return HttpResponse( 'This page will display a summary "small-view" of all the widgets.' )
 
 def widget( request, identifier ):
     """ Displays requested widget. """

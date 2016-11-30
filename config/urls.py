@@ -19,6 +19,8 @@ urlpatterns = [
 
     url( r'^request_widget/$',  views.request_widget, name='request_widget_url' ),
 
+    url( r'^widgets/$',  views.widgets, name='widgets_url' ),
+
     url( r'^widget/(?P<identifier>[^/]+)/$',  views.widget, name='widget_url' ),
 
     url( r'^tag/(?P<tag>[^/]+)/$',  views.tag, name='tag_url' ),
