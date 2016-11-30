@@ -39,21 +39,9 @@
         var button = document.getElementById('change-chart');
         var chartDiv = document.getElementById('chart_div');
 
-        // var data = new google.visualization.DataTable();
-        // data.addColumn('date', 'Month');
-        // data.addColumn('number', "easyBorrow requests");
-        // data.addRows([
-        //     [new Date(2014, 9), 3974],
-        //     [new Date(2014, 10), 2923],
-        //     [new Date(2014, 11), 3138],
-        //     [new Date(2014, 12), 1660],
-        //     [new Date(2015, 1), 3631],
-        //     [new Date(2015, 2), 3054]
-        // ]);
-
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'not shown; x-axis increments');
-        data.addColumn('number', "easyBorrow requests");
+        data.addColumn('number', "{{ title }}");
         data.addRows([
             [0, 3974],
             [1, 2923],

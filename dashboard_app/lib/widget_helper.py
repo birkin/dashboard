@@ -16,6 +16,7 @@ class WidgetPrepper(object):
             Called by views.widget() """
         data_lst = json.loads( widget.data_points )
         context = {
+            'title': widget.title,
             'contact_email': widget.data_contact_email_address,
             'data': data_lst
             }
