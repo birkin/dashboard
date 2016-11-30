@@ -16,11 +16,10 @@ class WidgetPrepper(object):
             Called by views.widget() """
         return {}
 
-    def build_json_widget_output( self, widget, callback, absolute_uri ):
+    def build_json_widget_output( self, widget, callback, context ):
         """ Preps json for response.
             Called by views.widget() """
-        jdict = widget.get_jdict( absolute_uri )
-        output = json.dumps( jdict, sort_keys=True, indent=2 )
+        output = json.dumps( context, sort_keys=True, indent=2 )
         if callback:
             output = '{v_callback}({v_output})'.format( v_callback=callback, v_output=output )
         return output
