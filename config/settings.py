@@ -149,6 +149,7 @@ LOGGING = {
         'dashboard_app': {
             'handlers': ['logfile'],
             'level': unicode( os.environ.get(u'DSHBRD__LOG_LEVEL') ),
+            'propogate': False
         },
     }
 }
