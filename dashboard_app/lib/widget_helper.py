@@ -15,7 +15,7 @@ class WidgetPrepper(object):
     def __init__(self):
         pass
 
-    def build_context( self, widget ):
+    def build_context( self, widget, scheme, host ):
         """ Preps widget context.
             Called by views.widget() """
         data_lst = json.loads( widget.data_points )
@@ -23,8 +23,7 @@ class WidgetPrepper(object):
             'title': widget.title,
             'contact_email': 'birkin_diana@brown.edu',
             'more_info_url': '',
-            # 'widget_url': '{}'.format( reverse('widget_url', args=[widget.slug]) ),
-            'widget_url': '{}'.format( reverse('widget_url', kwargs={'identifier': widget.slug}) ),
+            'widget_url': '{scm}://{hst}/{url}'.format( scm=scheme, hst=host, url=reverse('widget_url', kwargs={'identifier': widget.slug}) ),
             'data': data_lst
             }
         log.debug( 'context, ```{}```'.format(pprint.pformat(context)) )

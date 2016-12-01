@@ -34,7 +34,7 @@ def widget( request, identifier ):
     """ Displays requested widget. """
     widget = get_object_or_404( Widget, slug=identifier )
     log.debug( 'widget found for identifier, `{}`'.format(identifier) )
-    context = widget_prepper.build_context( widget )
+    context = widget_prepper.build_context( widget, request.scheme, request.get_host() )
     if request.GET.get( 'format', None ) == 'json':
         output = widget_prepper.build_json_widget_output( widget, request.GET.get('callback', None), context )
         return HttpResponse( output, content_type = 'application/javascript; charset=utf-8' )
