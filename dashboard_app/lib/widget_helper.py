@@ -2,7 +2,11 @@
 
 from __future__ import unicode_literals
 
-import json
+import json, logging, pprint
+from django.core.urlresolvers import reverse
+
+
+log = logging.getLogger(__name__)
 
 
 class WidgetPrepper(object):
@@ -17,9 +21,13 @@ class WidgetPrepper(object):
         data_lst = json.loads( widget.data_points )
         context = {
             'title': widget.title,
-            'contact_email': widget.data_contact_email_address,
+            'contact_email': 'birkin_diana@brown.edu',
+            'more_info_url': '',
+            # 'widget_url': '{}'.format( reverse('widget_url', args=[widget.slug]) ),
+            'widget_url': '{}'.format( reverse('widget_url', kwargs={'identifier': widget.slug}) ),
             'data': data_lst
             }
+        log.debug( 'context, ```{}```'.format(pprint.pformat(context)) )
         return context
 
     def build_json_widget_output( self, widget, callback, context ):

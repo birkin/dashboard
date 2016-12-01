@@ -16,12 +16,12 @@
 
 	<div id="chart_info">
 		<ul>
-			<li>Data contact: <a href="mailto:{{ widget.data_contact_email_address }}">{{ widget.data_contact_name }}</a></li>
+			<li>Data contact: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></li>
 			{% if widget.more_info_url %}
 			<li>More info: <a href="{{ widget.more_info_url }}">{{ widget.more_info_url }}</a></li>
 			{% endif %}
 			<li>Widget data: <a href="{{ host }}feeds/widget_data/{{ widget.slug }}/">{{ host }}feeds/widget_data/{{ widget.slug }}/</a></li>
-			<li>Widget url: <a href="{{ host }}widget/{{ widget.slug }}/">{{ host }}widget/{{ widget.slug }}/</a></li>
+			<li>Widget url: <a href="{{ widget_url }}">{{ widget_url }}</a></li>
 		</ul>
 	</div>
 
