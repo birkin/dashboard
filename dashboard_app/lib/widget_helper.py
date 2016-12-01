@@ -19,11 +19,15 @@ class WidgetPrepper(object):
         """ Preps widget context.
             Called by views.widget() """
         data_lst = json.loads( widget.data_points )
+        widget_url = '{scm}://{hst}{url}'.format( scm=scheme, hst=host, url=reverse('widget_url', kwargs={'identifier': widget.slug}) )
+        # widget_url = '{scm}://{hst}/{url}'.format( scm='http', hst='host', url='some/path' )
+        log.debug( 'widget_url, ```{}```'.format(widget_url) )
         context = {
             'title': widget.title,
             'contact_email': 'birkin_diana@brown.edu',
             'more_info_url': '',
-            'widget_url': '{scm}://{hst}/{url}'.format( scm=scheme, hst=host, url=reverse('widget_url', kwargs={'identifier': widget.slug}) ),
+            'widget_url': widget_url,
+            'widget_data_url': '{}?format=json'.format( widget_url ),
             'data': data_lst
             }
         log.debug( 'context, ```{}```'.format(pprint.pformat(context)) )
