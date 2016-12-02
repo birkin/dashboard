@@ -31,6 +31,8 @@ class WidgetPrepper(object):
             'data': data_lst,
             'template_row_data': [ [0, 3974], [1, 2923], [2, 3138], [3, 1660], [4, 3631], [5, 3054] ],
             'widget_tick_data': [ "{v:0, f:'2014-09'}", "{v:1, f:'2014-10'}", "{v:2, f:'2014-11'}", "{v:3, f:'2014-12'}", "{v:4, f:'2015-01'}", "{v:5, f:'2015-02'}" ],
+            'max_y': 4172,  #5% over max count
+            # 'max_y': 100000,
             }
         log.debug( 'context, ```{}```'.format(pprint.pformat(context)) )
         return context
@@ -42,4 +44,3 @@ class WidgetPrepper(object):
         if callback:
             output = '{v_callback}({v_output})'.format( v_callback=callback, v_output=output )
         return output
-
