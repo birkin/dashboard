@@ -39,16 +39,25 @@
         var button = document.getElementById('change-chart');
         var chartDiv = document.getElementById('chart_div');
 
+        // var data = new google.visualization.DataTable();
+        // data.addColumn('number', 'not shown; x-axis increments');
+        // data.addColumn('number', "{{ line_title }}");
+        // data.addRows([
+        //     [0, 3974],
+        //     [1, 2923],
+        //     [2, 3138],
+        //     [3, 1660],
+        //     [4, 3631],
+        //     [5, 3054],
+        // ]);
+
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'not shown; x-axis increments');
         data.addColumn('number', "{{ line_title }}");
         data.addRows([
-            [0, 3974],
-            [1, 2923],
-            [2, 3138],
-            [3, 1660],
-            [4, 3631],
-            [5, 3054],
+            {% for element in template_row_data %}
+            {{ element }},
+            {% endfor %}
         ]);
 
         var options = {
@@ -80,17 +89,24 @@
             //     width:'50%',
             //     height:'75%'
             // },
-            // hAxis: {
-            //   title: 'foo'
             // },
+            // hAxis: {
+            //     // title: 'foo',
+            //     ticks: [ // labels for x-axis points
+            //         {v:0, f:'2014-09'},
+            //         {v:1, f:'2014-10'},
+            //         {v:2, f:'2014-11'},
+            //         {v:3, f:'2014-12'},
+            //         {v:4, f:'2015-01'},
+            //         {v:5, f:'2015-02'},
+            //         ]
+            //     },
             hAxis: {
+                // title: 'foo',
                 ticks: [ // labels for x-axis points
-                    {v:0, f:'2014-09'},
-                    {v:1, f:'2014-10'},
-                    {v:2, f:'2014-11'},
-                    {v:3, f:'2014-12'},
-                    {v:4, f:'2015-01'},
-                    {v:5, f:'2015-02'},
+                    {% for w_t_element in widget_tick_data %}
+                    {{ w_t_element | safe }},
+                    {% endfor %}
                     ]
                 },
             vAxis: {

@@ -20,7 +20,6 @@ class WidgetPrepper(object):
             Called by views.widget() """
         data_lst = json.loads( widget.data_points )
         widget_url = '{scm}://{hst}{url}'.format( scm=scheme, hst=host, url=reverse('widget_url', kwargs={'identifier': widget.slug}) )
-        # widget_url = '{scm}://{hst}/{url}'.format( scm='http', hst='host', url='some/path' )
         log.debug( 'widget_url, ```{}```'.format(widget_url) )
         context = {
             'line_title': widget.title,  # the 'line' title; will appear in legend
@@ -29,7 +28,9 @@ class WidgetPrepper(object):
             'more_info_url': '',
             'widget_url': widget_url,
             'widget_data_url': '{}?format=json'.format( widget_url ),
-            'data': data_lst
+            'data': data_lst,
+            'template_row_data': [ [0, 3974], [1, 2923], [2, 3138], [3, 1660], [4, 3631], [5, 3054] ],
+            'widget_tick_data': [ "{v:0, f:'2014-09'}", "{v:1, f:'2014-10'}", "{v:2, f:'2014-11'}", "{v:3, f:'2014-12'}", "{v:4, f:'2015-01'}", "{v:5, f:'2015-02'}" ],
             }
         log.debug( 'context, ```{}```'.format(pprint.pformat(context)) )
         return context
