@@ -41,7 +41,7 @@
 
         var data = new google.visualization.DataTable();
         data.addColumn('number', 'not shown; x-axis increments');
-        data.addColumn('number', "{{ title }}");
+        data.addColumn('number', "{{ line_title }}");
         data.addRows([
             [0, 3974],
             [1, 2923],
@@ -52,7 +52,7 @@
         ]);
 
         var options = {
-            title: 'monthly count of easyBorrow requests \n(disposed of either through a josiah-redirect, or borrowdirect, or illiad)',
+            title: "{{ chart_title }}",
             width: 1000,
             height: 500,
             lineWidth: 5,

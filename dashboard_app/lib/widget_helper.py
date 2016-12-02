@@ -23,7 +23,8 @@ class WidgetPrepper(object):
         # widget_url = '{scm}://{hst}/{url}'.format( scm='http', hst='host', url='some/path' )
         log.debug( 'widget_url, ```{}```'.format(widget_url) )
         context = {
-            'title': widget.title,
+            'line_title': widget.title,  # the 'line' title; will appear in legend
+            'chart_title': 'monthly count of easyBorrow requests \\n(disposed of either through a josiah-redirect, or borrowdirect, or illiad)',
             'contact_email': 'birkin_diana@brown.edu',
             'more_info_url': '',
             'widget_url': widget_url,
