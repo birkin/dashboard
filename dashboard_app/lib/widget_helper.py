@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 import json, logging, pprint
+from django.conf import settings
 from django.core.urlresolvers import reverse
 
 
@@ -24,8 +25,8 @@ class WidgetPrepper(object):
         context = {
             'line_title': widget.title,  # the 'line' title; will appear in legend
             'chart_title': 'monthly count of easyBorrow requests \\n(disposed of either through a josiah-redirect, or borrowdirect, or illiad)',
-            'contact_email': 'birkin_diana@brown.edu',
-            'more_info_url': '',
+            'dashboard_info': settings.DOCUMENTATION_URL,
+            'more_widget_info_url': '',
             'widget_url': widget_url,
             'widget_data_url': '{}?format=json'.format( widget_url ),
             'data': data_lst,
