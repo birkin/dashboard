@@ -110,27 +110,55 @@ class WidgetHelper( object ):
     def process_data( self, widget ):
         """ Ensures data points are valid, and calculates and sets values for certain fields.
             Called by Widget.save() """
-        log.debug( 'starting save validation' )
-        lst = self.validate_data( widget.data_points )
+        self.validate_data( widget.data_points )
         # widget.baseline_value = lst[0].values()[0]
         # log.debug( 'hereA' )
         # widget.best_value = self.get_best_value( widget.best_goal, lst )
         # widget.current_value = lst[-1].values()[0]
         # widget.trend_direction = self.get_trend_direction( widget.current_value, lst )
         # widget.trend_color = self.get_trend_color( widget.trend_direction, widget.best_goal )
-        log.debug( 'widget, `{}`'.format(widget) )
+        log.debug( 'dir(widget), `{}`'.format( dir(widget) ) )
         return widget
 
     def validate_data( self, data ):
         """ Ensures data is a list of dicts.
             Called by process_data() """
         log.debug( 'data, ```{}```'.format(data) )
-        lst = json.loads( data )
-        for dct in lst:
-            assert type( dct ) == dict
-        log.debug( 'lst, ```{}```'.format(lst) )
-        log.debug( 'type(lst), `{}`'.format( type(lst) ) )
-        return lst
+        validity = False
+        try:
+            lst = json.loads( data )
+            for dct in lst:
+                assert type( dct ) == dict
+            validity = True
+        except Exception as e:
+            log.error( 'error validating data on save, ```{}```'.format(e) )
+        log.debug( 'validity, `{}`'.format(validity) )
+        return validity
+
+    # def process_data( self, widget ):
+    #     """ Ensures data points are valid, and calculates and sets values for certain fields.
+    #         Called by Widget.save() """
+    #     log.debug( 'starting save validation' )
+    #     lst = self.validate_data( widget.data_points )
+    #     # widget.baseline_value = lst[0].values()[0]
+    #     # log.debug( 'hereA' )
+    #     # widget.best_value = self.get_best_value( widget.best_goal, lst )
+    #     # widget.current_value = lst[-1].values()[0]
+    #     # widget.trend_direction = self.get_trend_direction( widget.current_value, lst )
+    #     # widget.trend_color = self.get_trend_color( widget.trend_direction, widget.best_goal )
+    #     log.debug( 'widget, `{}`'.format(widget) )
+    #     return widget
+
+    # def validate_data( self, data ):
+    #     """ Ensures data is a list of dicts.
+    #         Called by process_data() """
+    #     log.debug( 'data, ```{}```'.format(data) )
+    #     lst = json.loads( data )
+    #     for dct in lst:
+    #         assert type( dct ) == dict
+    #     log.debug( 'lst, ```{}```'.format(lst) )
+    #     log.debug( 'type(lst), `{}`'.format( type(lst) ) )
+    #     return lst
 
     # def get_best_value( self, best_goal, lst ):
     #     """ Grabs best value in list, which will be the highest or lowest, depending on widget.best_goal.
