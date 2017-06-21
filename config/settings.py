@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 """
 Django settings for dashboard_project.
 
@@ -19,13 +17,13 @@ import json, os
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = unicode( os.path.dirname(os.path.dirname(__file__)) )
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = unicode( os.environ['DSHBRD__SECRET_KEY'] )
+SECRET_KEY = os.environ['DSHBRD__SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = json.loads( os.environ['DSHBRD__DEBUG_JSON'] )  # will be True or False
@@ -105,12 +103,12 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-STATIC_URL = unicode( os.environ['DSHBRD__STATIC_URL'] )
-STATIC_ROOT = unicode( os.environ['DSHBRD__STATIC_ROOT'] )  # needed for collectstatic command
+STATIC_URL = os.environ['DSHBRD__STATIC_URL']
+STATIC_ROOT = os.environ['DSHBRD__STATIC_ROOT']  # needed for collectstatic command
 
 
 # Email
-EMAIL_HOST = unicode( os.environ['DSHBRD__EMAIL_HOST'] )
+EMAIL_HOST = os.environ['DSHBRD__EMAIL_HOST']
 EMAIL_PORT = int( os.environ['DSHBRD__EMAIL_PORT'] )
 
 
@@ -136,7 +134,7 @@ LOGGING = {
         'logfile': {
             'level':'DEBUG',
             'class':'logging.FileHandler',  # note: configure server to use system's log-rotate to avoid permissions issues
-            'filename': unicode( os.environ.get(u'DSHBRD__LOG_PATH') ),
+            'filename': os.environ.get(u'DSHBRD__LOG_PATH'),
             'formatter': 'standard',
         },
         'console':{
@@ -148,7 +146,7 @@ LOGGING = {
     'loggers': {
         'dashboard_app': {
             'handlers': ['logfile'],
-            'level': unicode( os.environ.get(u'DSHBRD__LOG_LEVEL') ),
+            'level': os.environ.get(u'DSHBRD__LOG_LEVEL'),
             'propogate': False
         },
     }
@@ -157,7 +155,7 @@ LOGGING = {
 
 ## app-level settings ##
 
-EMAIL_GENERAL_HELP = unicode( os.environ['DSHBRD__EMAIL_GENERAL_HELP'] )
+EMAIL_GENERAL_HELP = os.environ['DSHBRD__EMAIL_GENERAL_HELP']
 
 
 ## EOF ##
