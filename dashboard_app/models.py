@@ -64,11 +64,11 @@ class Widget(models.Model):
             self.data_points = 'INVALID_DATA: -->' + self.data_points + '<--'
             super(Widget, self).save() # Call the "real" save() method
 
-    def get_jdict( self, url ):
-        """ Returns widget data in json-compatible dict. """
-        widget_helper = WidgetHelper()
-        jdct = widget_helper.output_jdict( self, url )
-        return jdct
+    # def get_jdict( self, url ):
+    #     """ Returns widget data in json-compatible dict. """
+    #     widget_helper = WidgetHelper()
+    #     jdct = widget_helper.output_jdict( self, url )
+    #     return jdct
 
     # def _get_trend_direction_text(self):
     #     '''Returns trend-direction text from trend-direction integer'''
@@ -218,77 +218,77 @@ class WidgetHelper( object ):
     # end class WidgetHelper
 
 
-class ChartMaker( object ):
-    """ Contains helpers for creating the main chart. """
+# class ChartMaker( object ):
+#     """ Contains helpers for creating the main chart. """
 
-    def prep_data( self, data_points ):
-        """ Calls helper functions for preparing data.
-            Called by views.widget() """
-        ( keys, values ) = self.extract_values( data_points )
-        # values = self.extract_values( data_points )
-        percentages = self.make_percentages( values )
-        ranges = self.make_ranges( percentages )
-        return ( values, percentages, ranges, keys )
-        # return ( u'values', 'percentages', u'range', u'keys' )
+#     def prep_data( self, data_points ):
+#         """ Calls helper functions for preparing data.
+#             Called by views.widget() """
+#         ( keys, values ) = self.extract_values( data_points )
+#         # values = self.extract_values( data_points )
+#         percentages = self.make_percentages( values )
+#         ranges = self.make_ranges( percentages )
+#         return ( values, percentages, ranges, keys )
+#         # return ( u'values', 'percentages', u'range', u'keys' )
 
-    def extract_values( self, data_points ):
-        """ Returns values from list of dcts.
-            Called by prep_data() """
-        log.debug( u'in models.ChartMaker.extract_values(); data_points, `%s`; type(data_points), `%s`' % (pprint.pformat(data_points), type(data_points)) )
-        ( keys, values ) = ( [], [] )
-        for dct in json.loads( data_points ):
-            keys.append( dct.items()[0][0] )
-            values.append( dct.items()[0][1] )
-        log.debug( u'in models.ChartMaker.extract_values(); keys, `%s`; values, `%s`' % (keys, values) )
-        return ( keys, values )
+#     def extract_values( self, data_points ):
+#         """ Returns values from list of dcts.
+#             Called by prep_data() """
+#         log.debug( u'in models.ChartMaker.extract_values(); data_points, `%s`; type(data_points), `%s`' % (pprint.pformat(data_points), type(data_points)) )
+#         ( keys, values ) = ( [], [] )
+#         for dct in json.loads( data_points ):
+#             keys.append( dct.items()[0][0] )
+#             values.append( dct.items()[0][1] )
+#         log.debug( u'in models.ChartMaker.extract_values(); keys, `%s`; values, `%s`' % (keys, values) )
+#         return ( keys, values )
 
-    def make_percentages( self, values ):
-        """ Returns percentages needed by google-chart api for given list of values.
-            Called by prep_data() """
-        ( percentages, high_number ) = ( [], max(values) )
-        high_number_divisor = high_number * .01
-        for number in values:
-            if high_number_divisor == 0:
-                raw_percentage = 0
-            else:
-                raw_percentage = number / high_number_divisor
-            rounded_raw_percentage = round( raw_percentage )
-            percentages.append( rounded_raw_percentage )
-        log.debug( u'in models.ChartMaker.make_percentages(); percentages, `%s`' % percentages )
-        return percentages
+#     def make_percentages( self, values ):
+#         """ Returns percentages needed by google-chart api for given list of values.
+#             Called by prep_data() """
+#         ( percentages, high_number ) = ( [], max(values) )
+#         high_number_divisor = high_number * .01
+#         for number in values:
+#             if high_number_divisor == 0:
+#                 raw_percentage = 0
+#             else:
+#                 raw_percentage = number / high_number_divisor
+#             rounded_raw_percentage = round( raw_percentage )
+#             percentages.append( rounded_raw_percentage )
+#         log.debug( u'in models.ChartMaker.make_percentages(); percentages, `%s`' % percentages )
+#         return percentages
 
-    def make_ranges( self, percentages ):
-        """ Returns ranges to be used by google-chart api.
-            Called by prep_data() """
-        high = max( percentages ) + 5
-        low = min( percentages ) - 5
-        ranges = [ low, high ]
-        log.debug( u'in models.ChartMaker.make_percentages(); ranges, `%s`' % ranges )
-        return ranges
+#     def make_ranges( self, percentages ):
+#         """ Returns ranges to be used by google-chart api.
+#             Called by prep_data() """
+#         high = max( percentages ) + 5
+#         low = min( percentages ) - 5
+#         ranges = [ low, high ]
+#         log.debug( u'in models.ChartMaker.make_percentages(); ranges, `%s`' % ranges )
+#         return ranges
 
-    def prep_gchart_detail_url( self ):
-        """ Assembles google-chart url for detail chart.
-            Called by views.widget() """
+#     def prep_gchart_detail_url( self ):
+#         """ Assembles google-chart url for detail chart.
+#             Called by views.widget() """
 
-        # <img src="http://chart.apis.google.com/chart?cht=lc
-        #     &amp;chs=800x375
-        #     &amp;chd=t:{% for percentage in detailchart_percentages %}{{percentage}}{% if not forloop.last %},{% endif %}{% endfor %}
-        #     &amp;chds={{ detailchart_range.0 }},{{ detailchart_range.1 }}
-        #     &amp;chtt={{ widget.title|urlencode }}
-        #     &amp;chts=76A4FB,20
-        #     &amp;chf=c,lg,0,76A4FB,1,ffffff,0|bg,s,EFEFEF
-        #     &amp;chxt=x,x,x
-        #     &amp;chxl=0:|{% for key in detailchart_keys %}{{ key }}|{% endfor %}1:|{% for value in detailchart_values %}{{ value|intcomma }}|{% endfor %}2:|{{ widget.key_label }} and {{ widget.value_label }}
-        #     &amp;chxp=0|1|2,50
-        #     &amp;chxs=2,76A4FB,12,0
-        #     {% if data_index %}
-        #     &amp;chm=c,FF0000,0,{{ data_index|add:"-1" }}.0,20.0 {% comment %} The 'add' template-filter is used because the url passes a 1-based index-number to the template, but the google-chart-api uses a zero-based index-number here. {% endcomment %}
-        #     {% endif %}"
-        #     alt="detail line-chart showing {{ widget.key_label }} and {{ widget.value_label }}" />
+#         # <img src="http://chart.apis.google.com/chart?cht=lc
+#         #     &amp;chs=800x375
+#         #     &amp;chd=t:{% for percentage in detailchart_percentages %}{{percentage}}{% if not forloop.last %},{% endif %}{% endfor %}
+#         #     &amp;chds={{ detailchart_range.0 }},{{ detailchart_range.1 }}
+#         #     &amp;chtt={{ widget.title|urlencode }}
+#         #     &amp;chts=76A4FB,20
+#         #     &amp;chf=c,lg,0,76A4FB,1,ffffff,0|bg,s,EFEFEF
+#         #     &amp;chxt=x,x,x
+#         #     &amp;chxl=0:|{% for key in detailchart_keys %}{{ key }}|{% endfor %}1:|{% for value in detailchart_values %}{{ value|intcomma }}|{% endfor %}2:|{{ widget.key_label }} and {{ widget.value_label }}
+#         #     &amp;chxp=0|1|2,50
+#         #     &amp;chxs=2,76A4FB,12,0
+#         #     {% if data_index %}
+#         #     &amp;chm=c,FF0000,0,{{ data_index|add:"-1" }}.0,20.0 {% comment %} The 'add' template-filter is used because the url passes a 1-based index-number to the template, but the google-chart-api uses a zero-based index-number here. {% endcomment %}
+#         #     {% endif %}"
+#         #     alt="detail line-chart showing {{ widget.key_label }} and {{ widget.value_label }}" />
 
-        pass
+#         pass
 
-    # end class ChartMaker
+#     # end class ChartMaker
 
 
 class MinichartMaker( object ):

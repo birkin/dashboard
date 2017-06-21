@@ -13,7 +13,7 @@ from dashboard_app.lib.widget_helper import WidgetPrepper
 from dashboard_app.models import Widget
 
 log = logging.getLogger(__name__)
-chart_maker = models.ChartMaker()
+# chart_maker = models.ChartMaker()
 minichart_maker = models.MinichartMaker()
 shib_view_helper = models.ShibViewHelper()
 widget_helper = models.WidgetHelper()
