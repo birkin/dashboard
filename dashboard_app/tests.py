@@ -2,15 +2,16 @@
 
 import logging
 import numpy
-# from dashboard_app.models import Widget, WidgetHelper, ChartMaker, MinichartMaker
-from django.test import TestCase
-from dashboard_app.models import Widget, WidgetHelper
 from dashboard_app.lib import misc
+from dashboard_app.lib.widget_helper import WidgetPrepper
+from dashboard_app.models import Widget, WidgetHelper
+from django.test import TestCase
 
 
 log = logging.getLogger(__name__)
 
 widget_helper = WidgetHelper()
+prepper = WidgetPrepper()
 
 
 class SlopeCalculatorTest(TestCase):
@@ -51,6 +52,33 @@ class WidgetHelperTest(TestCase):
             # print( 'oops!, ```{}```'.format(e) )
             validity = False
         self.assertEqual( False, validity )
+
+
+class WidgetPrepperTest(TestCase):
+    """ Tests for widget_helper.WidgetPrepper() """
+
+    def test_make_template_row_data(self):
+        """ Checks transform of original data to values list for chart. """
+        data_lst = [ {'Jan': 100}, {'Feb': 75}, {'Mar': 150} ]
+        self.assertEqual(
+            [ [0, 100], [1,75], [2,150] ],
+            prepper.make_template_row_data( data_lst )
+            )
+
+    def test_make_widget_tick_data(self):
+        """ Checks transform of original data to labels list for chart x-axis. """
+        data_lst = [ {'Jan': 100}, {'Jan': 75}, {'Mar': 150} ]
+        self.assertEqual(
+            [ "{v:0, f:'Jan'}", "{v:1, f:'Jan'}", "{v:2, f:'Mar'}" ],
+            prepper.make_widget_tick_data( data_lst )
+            )
+
+
+
+
+
+
+
 
     # def test_process_data(self):
     #     """ Tests process_data(). """
