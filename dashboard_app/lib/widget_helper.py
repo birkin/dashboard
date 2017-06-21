@@ -35,7 +35,7 @@ class WidgetPrepper(object):
             'line_title': widget.title,  # the 'line' title; will appear in legend
             'chart_title': widget.title_info,
             'dashboard_info': settings.DOCUMENTATION_URL,
-            'more_widget_info_url': '',
+            'more_widget_info_url': widget.more_info_url,
             'widget_url': widget_url,
             'widget_data_url': '{}?format=json'.format( widget_url ),
             'data': data_lst,
