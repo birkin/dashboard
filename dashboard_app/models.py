@@ -7,7 +7,6 @@ from django.conf import settings as project_settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponseRedirect
-from django.utils.encoding import smart_unicode
 from django.utils.text import slugify
 
 log = logging.getLogger(__name__)
@@ -54,14 +53,14 @@ class Widget(models.Model):
     # tags = models.ManyToManyField( 'Tag', blank=True, null=True )
 
     def __unicode__(self):
-        return smart_unicode(self.title)
+        return self.title
 
     def save(self):
         wh = WidgetHelper()
         try:
             self = wh.process_data( self )
             super(Widget, self).save() # Call the "real" save() method
-        except Exception, e:
+        except Exception as e:
             log.debug( u'EXCEPTION, %s' % unicode(repr(e)) )
             self.data_points = 'INVALID_DATA: -->' + self.data_points + '<--'
             super(Widget, self).save() # Call the "real" save() method
