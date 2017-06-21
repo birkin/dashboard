@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import unicode_literals
-
 import datetime, json, logging, os, pprint, itertools
 from django.conf import settings as project_settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponseRedirect
 from django.utils.text import slugify
+
 
 log = logging.getLogger(__name__)
 
@@ -61,7 +60,7 @@ class Widget(models.Model):
             self = wh.process_data( self )
             super(Widget, self).save() # Call the "real" save() method
         except Exception as e:
-            log.debug( u'EXCEPTION, %s' % unicode(repr(e)) )
+            log.debug( u'EXCEPTION, %s' % e )
             self.data_points = 'INVALID_DATA: -->' + self.data_points + '<--'
             super(Widget, self).save() # Call the "real" save() method
 
@@ -111,100 +110,110 @@ class WidgetHelper( object ):
     def process_data( self, widget ):
         """ Ensures data points are valid, and calculates and sets values for certain fields.
             Called by Widget.save() """
+        log.debug( 'starting save validation' )
         lst = self.validate_data( widget.data_points )
-        widget.baseline_value = lst[0].values()[0]
-        widget.best_value = self.get_best_value( widget.best_goal, lst )
-        widget.current_value = lst[-1].values()[0]
-        widget.trend_direction = self.get_trend_direction( widget.current_value, lst )
-        widget.trend_color = self.get_trend_color( widget.trend_direction, widget.best_goal )
+        # widget.baseline_value = lst[0].values()[0]
+        # log.debug( 'hereA' )
+        # widget.best_value = self.get_best_value( widget.best_goal, lst )
+        # widget.current_value = lst[-1].values()[0]
+        # widget.trend_direction = self.get_trend_direction( widget.current_value, lst )
+        # widget.trend_color = self.get_trend_color( widget.trend_direction, widget.best_goal )
+        log.debug( 'widget, `{}`'.format(widget) )
         return widget
 
     def validate_data( self, data ):
         """ Ensures data is a list of dicts.
             Called by process_data() """
+        log.debug( 'data, ```{}```'.format(data) )
         lst = json.loads( data )
         for dct in lst:
             assert type( dct ) == dict
+        log.debug( 'lst, ```{}```'.format(lst) )
+        log.debug( 'type(lst), `{}`'.format( type(lst) ) )
         return lst
 
-    def get_best_value( self, best_goal, lst ):
-        """ Grabs best value in list, which will be the highest or lowest, depending on widget.best_goal.
-            Called by process_data() """
-        initial_value = lst[0].values()[0]
-        ( high_value, low_value ) = ( initial_value, initial_value )
-        for dct in lst:
-            value = dct.values()[0]
-            high_value = value if (value > high_value) else high_value
-            low_value = value if (value < low_value) else low_value
-        if best_goal == 1:  # best is higher
-            return_val = high_value
-        else:
-            return_val = low_value
-        return return_val
+    # def get_best_value( self, best_goal, lst ):
+    #     """ Grabs best value in list, which will be the highest or lowest, depending on widget.best_goal.
+    #         Called by process_data() """
+    #     log.debug( 'starting get_best_value()' )
+    #     high_val = 0
+    #     low_val = 0
+    #     for dct in lst:  # each dct has one item
+    #         kv_items = list( dct.items() )
+    #         log.debug( 'type(kv_items), `{t}`; val, `{v}`'.format( t=type(kv_items), v=kv_items ) )
+    #         ( k, v ) = kv_items[0]
+    #         high_value = value if (value > high_value) else high_value
+    #         low_value = value if (value < low_value) else low_value
+    #     if best_goal == 1:  # best is higher
+    #         return_val = high_value
+    #     else:
+    #         return_val = low_value
+    #     log.debug( 'return_val, `{}`'.format(return_val) )
+    #     return return_val
 
-    def get_trend_direction( self, current_value, lst ):
-        """ Grabs trend direction.
-            Called by process_data() """
-        previous_value = lst[-2].values()[0]
-        if current_value > previous_value:
-            trend_direction = 1
-        elif current_value == previous_value:
-            trend_direction = 0
-        else:
-            trend_direction = -1
-        return trend_direction
+    # def get_trend_direction( self, current_value, lst ):
+    #     """ Grabs trend direction.
+    #         Called by process_data() """
+    #     previous_value = lst[-2].values()[0]
+    #     if current_value > previous_value:
+    #         trend_direction = 1
+    #     elif current_value == previous_value:
+    #         trend_direction = 0
+    #     else:
+    #         trend_direction = -1
+    #     return trend_direction
 
-    def get_trend_color( self, trend_direction, best_goal ):
-        """ Sets the trend color based on the trend-direction and best-goal.
-            Called by process_data() """
-        if trend_direction == 0:
-            trend_color = 0
-        elif trend_direction == best_goal:
-            trend_color = 1
-        else:
-            trend_color = -1
-        return trend_color
+    # def get_trend_color( self, trend_direction, best_goal ):
+    #     """ Sets the trend color based on the trend-direction and best-goal.
+    #         Called by process_data() """
+    #     if trend_direction == 0:
+    #         trend_color = 0
+    #     elif trend_direction == best_goal:
+    #         trend_color = 1
+    #     else:
+    #         trend_color = -1
+    #     return trend_color
 
-    def get_trend_dicts( self ):
-        """ Returns static dicts.
-            Called by Widget.SOME_PROPERTY? """
-        trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
-        trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
-        return ( trend_direction_dict, trend_color_dict )
+    # def get_trend_dicts( self ):
+    #     """ Returns static dicts.
+    #         Called by Widget.SOME_PROPERTY? """
+    #     trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
+    #     trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
+    #     return ( trend_direction_dict, trend_color_dict )
 
-    def output_jdict( self, widget, url ):
-        """ Returns widget data in json-compatible dict format.
-            Called by Widget.json_data """
-        main_info = {
-            u'title': widget.title,
-            u'slug': widget.slug,
-            u'data_points': widget.data_points,
-            u'key_label': widget.key_label,
-            u'value_label': widget.value_label,
-            u'data_contact_name': widget.data_contact_name,
-            u'data_contact_email_address': widget.data_contact_email_address,
-            u'more_info_url': widget.more_info_url,
-            }
-        additional_info = {
-            u'title_info': widget.title_info,
-            u'baseline_value': widget.baseline_value,
-            u'baseline_info': widget.baseline_info,
-            u'best_goal': widget.best_goal,
-            u'best_value': widget.best_value,
-            u'best_value_info': widget.best_value_info,
-            u'current_value': widget.current_value,
-            u'current_value_info': widget.current_value_info,
-            u'trend_direction': widget.trend_direction,
-            u'trend_color': widget.trend_color,
-            u'max_data_points_count': widget.max_data_points_count,
-            }
-        dct = {
-            u'data_main': main_info,
-            u'data_other': additional_info,
-            u'request_datetime': unicode( datetime.datetime.now() ),
-            u'request_url': url
-            }
-        return dct
+    # def output_jdict( self, widget, url ):
+    #     """ Returns widget data in json-compatible dict format.
+    #         Called by Widget.json_data """
+    #     main_info = {
+    #         u'title': widget.title,
+    #         u'slug': widget.slug,
+    #         u'data_points': widget.data_points,
+    #         u'key_label': widget.key_label,
+    #         u'value_label': widget.value_label,
+    #         u'data_contact_name': widget.data_contact_name,
+    #         u'data_contact_email_address': widget.data_contact_email_address,
+    #         u'more_info_url': widget.more_info_url,
+    #         }
+    #     additional_info = {
+    #         u'title_info': widget.title_info,
+    #         u'baseline_value': widget.baseline_value,
+    #         u'baseline_info': widget.baseline_info,
+    #         u'best_goal': widget.best_goal,
+    #         u'best_value': widget.best_value,
+    #         u'best_value_info': widget.best_value_info,
+    #         u'current_value': widget.current_value,
+    #         u'current_value_info': widget.current_value_info,
+    #         u'trend_direction': widget.trend_direction,
+    #         u'trend_color': widget.trend_color,
+    #         u'max_data_points_count': widget.max_data_points_count,
+    #         }
+    #     dct = {
+    #         u'data_main': main_info,
+    #         u'data_other': additional_info,
+    #         u'request_datetime': str( datetime.datetime.now() ),
+    #         u'request_url': url
+    #         }
+    #     return dct
 
     # end class WidgetHelper
 

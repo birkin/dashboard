@@ -19,7 +19,14 @@ class WidgetPrepper(object):
     def build_context( self, widget, scheme, host ):
         """ Preps widget context.
             Called by views.widget() """
-        data_lst = json.loads( widget.data_points )
+        log.debug( 'starting build_context()' )
+        try:
+            data_lst = json.loads( widget.data_points )
+        except Exception as e:
+            log.error( 'error loading widget data, ```{}```'.format(e) )
+            context = { 'error': 'problem loading widget data; admin notified' }
+            return context
+        log.debug( 'data_lst loaded' )
         widget_url = '{scm}://{hst}{url}'.format( scm=scheme, hst=host, url=reverse('widget_url', kwargs={'identifier': widget.slug}) )
         log.debug( 'widget_url, ```{}```'.format(widget_url) )
         context = {

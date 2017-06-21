@@ -28,6 +28,8 @@ SECRET_KEY = os.environ['DSHBRD__SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = json.loads( os.environ['DSHBRD__DEBUG_JSON'] )  # will be True or False
 
+ADMINS = json.loads( os.environ['DSHBRD__ADMINS_JSON'] )
+
 ALLOWED_HOSTS = json.loads( os.environ['DSHBRD__ALLOWED_HOSTS'] )  # list
 
 
@@ -108,6 +110,7 @@ STATIC_ROOT = os.environ['DSHBRD__STATIC_ROOT']  # needed for collectstatic comm
 
 
 # Email
+# EMAIL_BACKEND = os.environ['DSHBRD__EMAIL_BACKEND']
 EMAIL_HOST = os.environ['DSHBRD__EMAIL_HOST']
 EMAIL_PORT = int( os.environ['DSHBRD__EMAIL_PORT'] )
 

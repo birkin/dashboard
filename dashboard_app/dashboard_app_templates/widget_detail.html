@@ -3,6 +3,12 @@
 <html>
 
 
+{% if error %}
+
+<p>{{ error }}</p>
+
+{% else %}
+
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
@@ -128,6 +134,8 @@
 
 </script>
 
+
+{% endif %}  {% comment "end of `if error` at top" %}{% endcomment %}
 
 
 </html>
