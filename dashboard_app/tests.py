@@ -45,7 +45,12 @@ class WidgetHelperTest(TestCase):
     def test_validate_data__bad_json(self):
         """ Checks bad json detection. """
         jsn = '[ {"97/98": zzz 183179}, {"98/99": 178095} ]'
-        self.assertEqual( False, widget_helper.validate_data(jsn) )
+        try:
+            validity = widget_helper.validate_data(jsn)
+        except Exception as e:
+            # print( 'oops!, ```{}```'.format(e) )
+            validity = False
+        self.assertEqual( False, validity )
 
     # def test_process_data(self):
     #     """ Tests process_data(). """

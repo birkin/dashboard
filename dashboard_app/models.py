@@ -123,7 +123,6 @@ class WidgetHelper( object ):
     def validate_data( self, data ):
         """ Ensures data is a list of dicts.
             Called by process_data() """
-        log.debug( 'data, ```{}```'.format(data) )
         validity = False
         try:
             lst = json.loads( data )
@@ -131,7 +130,8 @@ class WidgetHelper( object ):
                 assert type( dct ) == dict
             validity = True
         except Exception as e:
-            log.error( 'error validating data on save, ```{}```'.format(e) )
+            log.error( 'error validating data on save; exception, ```{ex}```; problematic data, ```{da}```'.format( ex=e, da=data ) )
+            raise Exception( 'bad_data' )  # needed for model's try-except block to trigger
         log.debug( 'validity, `{}`'.format(validity) )
         return validity
 
