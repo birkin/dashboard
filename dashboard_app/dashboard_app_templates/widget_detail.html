@@ -67,7 +67,7 @@
         ]);
 
         var options = {
-            title: "{{ chart_title|safe }}",
+            title: "{{ chart_title|safe }}",  // `safe` allows newline characters to be entered in db for multi-line titles
             width: 1000,
             height: 500,
             lineWidth: 5,
