@@ -44,60 +44,6 @@ def widget( request, identifier ):
         return render( request, 'dashboard_app_templates/widget_detail.html', context )
 
 
-# def widget( request, identifier ):
-#     """ Displays requested widget. """
-#     widget = get_object_or_404( Widget, slug=identifier )
-#     log.debug( 'widget found for identifier, `{}`'.format(identifier) )
-#     # ( chart_values, chart_percentages, chart_range, chart_keys ) = chart_maker.prep_data( widget.data_points )
-#     # gchart_detail_url = chart_maker.prep_gchart_detail_url()
-#     jdict = widget.get_jdict( request.build_absolute_uri() )
-#     if request.GET.get( 'format', None ) == 'json':
-#         output = json.dumps( jdict, sort_keys=True, indent=2 )
-#         if request.GET.get( 'callback', None ):
-#             output = '%s(%s)' % ( request.GET.get('callback'), output )
-#         return HttpResponse( output, content_type = 'application/javascript; charset=utf-8' )
-#     else:
-#         # return HttpResponse( jdict['data_main']['title'] )
-#         # context = {
-#         #     'widget': widget,
-#         #     'detailchart_percentages': chart_percentages,
-#         #     'detailchart_range': chart_range,
-#         #     'detailchart_keys': chart_keys,
-#         #     'data_index': 0  # so url can look 1-based, whereas google chart-api is zero-based
-#         #     }
-#         context = {}
-#         return render( request, 'dashboard_app_templates/widget_detail.html', context )
-
-
-#     # widget_instance = Widget.objects.get( slug=identifier )
-
-#     # detailchart_tuples = eval( widget_instance.data_points )
-
-#     # detailchart_values = []
-#     # for element in detailchart_tuples:
-#     #     detailchart_values.append( element[1] )
-
-#     # detailchart_percentages = utility_code.makeChartPercentages( detailchart_values )
-
-#     # detailchart_range = utility_code.makeChartRanges( detailchart_percentages )
-
-#     # detailchart_keys = []
-#     # for element in detailchart_tuples:
-#     #     detailchart_keys.append( element[0] )
-
-#     # page_dict = {
-#     #     'host':settings_app.HOST_URL_BASE,
-#     #     'widget':widget_instance,
-#     #     'detailchart_percentages':detailchart_percentages,
-#     #     'detailchart_range':detailchart_range,
-#     #     'detailchart_keys':detailchart_keys,
-#     #     'detailchart_values':detailchart_values,
-#     #     'data_index':int(data_index)
-#     #     # 'data_index':int(data_index) - 1 # so url can look 1-based, whereas google chart-api is zero-based
-#     #     }
-#     # return render_to_response( 'dashboard/info.html', page_dict )
-
-
 def request_widget( request ):
     """ STUB
         Displays/handles form for requesting a widget. """

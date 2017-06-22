@@ -1,56 +1,140 @@
-<!DOCTYPE HTML>
+{% load i18n %}
 
-<html>
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr" prefix="content: https://purl.org/rss/1.0/modules/content/ dc: https://purl.org/dc/terms/ foaf: https://xmlns.com/foaf/0.1/ og: https://ogp.me/ns# rdfs: https://www.w3.org/2000/01/rdf-schema# sioc: https://rdfs.org/sioc/ns# sioct: https://rdfs.org/sioc/types# skos: https://www.w3.org/2004/02/skos/core# xsd: https://www.w3.org/2001/XMLSchema#"><!--<![endif]-->
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
-    <title>
-        {% block page_title %}
-        dashboard - Brown University Library
-        {% endblock page_title %}
-    </title>
-    <link href="//library.brown.edu/css_2011/BUL2011.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="//library.brown.edu/scripts_2011/css3-mediaqueries.js"></script>
+
+    <meta charset="utf-8" />
+
+    <link rel="shortcut icon" href="https://library.brown.edu/info/sites/all/themes/custom/zen_bulsubtheme/favicon.ico" type="image/vnd.microsoft.icon" />
+    <link rel="shortlink" href="/info/node/36" />
+    <link rel="canonical" href="/info/webpublishing" />
+
+    <meta name="Generator" content="Drupal 7 (https://drupal.org)" />
+
+    <title>Dashboard | Brown University Library</title>
+
+    <script src="https://use.typekit.net/rur3iir.js"></script>
+    <script>try{Typekit.load({ async: true });}catch(e){}</script>
+
+    <meta name="MobileOptimized" content="width">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="viewport" content="width=device-width">
+
+    {% block page_styles %}
+    {% endblock %}
+
+    <style>
+        @import url("https://library.brown.edu/info/modules/system/system.base.css?ocdl2j");
+    </style>
+    <style>
+        @import url("https://library.brown.edu/info/modules/comment/comment.css?ocdl2j");
+        @import url("https://library.brown.edu/info/modules/field/theme/field.css?ocdl2j");
+        @import url("https://library.brown.edu/info/modules/node/node.css?ocdl2j");
+        @import url("https://library.brown.edu/info/modules/search/search.css?ocdl2j");
+        @import url("https://library.brown.edu/info/modules/user/user.css?ocdl2j");
+        @import url("https://library.brown.edu/info/sites/all/modules/contrib/views/css/views.css?ocdl2j");
+    </style>
+    <style>
+        @import url("https://library.brown.edu/info/sites/all/modules/contrib/ctools/css/ctools.css?ocdl2j");
+        @import url("https://library.brown.edu/info/sites/all/modules/contrib/shib_auth/shib_auth.css?ocdl2j");
+    </style>
+    <style>
+        @import url("https://library.brown.edu/info/sites/all/themes/custom/zen_bulsubtheme/css/styles.css?ocdl2j");
+    </style>
+
+    <script src="https://library.brown.edu/info/misc/jquery.js?v=1.4.4"></script>
+    <script src="https://library.brown.edu/info/misc/jquery.once.js?v=1.2"></script>
+    <script src="https://library.brown.edu/info/misc/drupal.js?ocdl2j"></script>
+
+    {% block meta %}{% endblock %}
+    <link href="{{ MEDIA_URL }}base.css" type="text/css" rel="stylesheet" media="screen" />
+    <script src="{{ MEDIA_URL }}js/base.js" type="text/javascript"></script>
+    {% block head %}{% endblock %}
+    <script type="text/javascript">
+        {% if search_history %}
+            addEventSimple(window, 'load', searchHistClick);
+        {% endif %}
+    </script>
+
 </head>
 
-<body>
 
-    <div id="wrapper">
+<body class="html not-front not-logged-in no-sidebars page-node page-node- page-node-36 node-type-page section-webpublishing" >
 
-        <div id="header">
-            <p class="top_header_links">
-                <a href="http://library.brown.edu/libweb/proxy.php">Off-Campus Access</a> &nbsp;&nbsp;&#124;&nbsp;&nbsp;
-                <a href="http://library.brown.edu/libweb/atoz.php">Library A&ndash;Z</a> <!-- &nbsp;&nbsp;&#124;&nbsp;&nbsp; -->
-                {% if logout_url %}&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="{{ logout_url }}">Log-out</a>{% endif %}
-            </p>
+    <p id="skip-link">
+        <a href="#main-menu" class="element-invisible element-focusable">Jump to navigation</a>
+    </p>
 
-            <div class="BUhomelink">
-                <a href="http://www.brown.edu"><img src="//library.brown.edu/images/spacer.gif" width="50" alt="Brown University Homepage" title="Brown University Homepage" /></a>
-            </div>
+    <div id="page">
 
-            <div class="BULhomelink">
-                <a href="http://library.brown.edu/"><img src="//library.brown.edu/images/spacer.gif" width="440" height="30" alt="Brown University Library Homepage" title="Brown University Library Homepage" /></a>
-            </div>
+        <!-- <div id="navigation">
+            <nav id="main-menu" role="navigation" tabindex="-1">
+                <h2 class="element-invisible">Main menu</h2>
+                <ul class="links inline clearfix">
+                    <li class="menu-440 first"><a href="https://library.brown.edu/borrowing/">Borrow, Request, &amp; Renew</a></li>
+                    <li class="menu-439"><a href="https://library.brown.edu/info/ajdb">Articles, Journals, &amp; Databases</a></li>
+                    <li class="menu-457"><a href="https://library.brown.edu/about/specialists.php">Research Help</a></li>
+                    <li class="menu-458"><a href="https://library.brown.edu/libweb/hours.php">Hours, Locations, &amp; Events</a></li>
+                    <li class="menu-459"><a href="https://library.brown.edu/libweb/askalib.php">Ask a Question Now</a></li>
+                    <li class="menu-460"><a href="https://library.brown.edu/libweb/proxy.php">Off-Campus Access</a></li>
+                    <li class="menu-461 last"><a href="https://josiah.brown.edu/patroninfo">My Library Account</a></li>
+                </ul>
+            </nav>
+        </div> -->
 
-        </div> <!-- end div#header -->
-
-        <div class="content-wrapper findit-core">
-
-            <div class="large-content findit-core">
-                <h3>dashboard</h3>
-
-                <div style="margin:2em;">
-                    {% block content %}
-                    {% endblock content %}
+        <header class="header" id="header" role="banner">
+            <a href="/info/" title="Home" rel="home" class="header__logo" id="logo">
+                <img src="https://library.brown.edu/info/sites/all/themes/custom/zen_bulsubtheme/BUL-logo-shield.png" alt="Home" class="header__logo-image" />
+            </a>
+            <div class="header__name-and-slogan" id="name-and-slogan">
+                <h1 class="header__site-name" id="site-name">
+                    <a href="/info/" title="Home" class="header__site-link" rel="home">
+                        <span>Brown University <span style="color:white;font-size:100.5%;">Library</span></span>
+                    </a>
+                </h1>
+            </div> <!-- end #name-and-slogan -->
+            <div id="BUL-Blacklight-search">   <!-- search box to match Blacklight's search box; classes reference Bootstrap -->
+                <div class="container">
+                    <form accept-charset="UTF-8" action="https://search.library.brown.edu/" class="search-query-form form-inline clearfix navbar-form" method="get">
+                        <div style="display:none"><input name="utf8" type="hidden" value="&#x2713;">
+                        </div>
+                        <div class="input-group col-md-9 col-md-offset-1">
+                            <input class="search_q q form-control" id="q" name="q" placeholder="Enter keywords to search library resources" type="text" value="" />
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary search-btn" id="search">
+                                    <span class="submit-search-text">Search</span>
+                                    <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
+            </div> <!-- end #BUL-Blacklight-search -->
+        </header>
 
-            </div> <!-- end div.large-content findit-core -->
+        <div id="breadcrumb-bar">
+        </div>
 
-        </div> <!-- end div.content-wrapper findit-core -->
-
-    </div> <!-- end div#wrapper -->
+        <div id="wrapper">
+            <div id="content">
+                <div id="main">
+                    <h1 id="logo">
+                        <span>Dashboard...</span>
+                    </h1>
+                    <div id="container">
+                        <div id="dashboard-content">
+                           {% block content %}{% endblock %}
+                        </div>
+                    </div> <!-- end div 'container' -->
+                </div> <!-- end div 'main' -->
+            </div> <!-- end div 'content' -->
+        </div> <!-- end div 'wrapper' -->
+    </div> <!-- end #page -->
 
 </body>
+
 
 </html>
