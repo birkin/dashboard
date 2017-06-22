@@ -7,6 +7,7 @@
             width: 800px;
             height: 520px;
             border: none;
+            margin-bottom: -400px;
             -moz-transform: scale(0.2);
             -moz-transform-origin: 0 0;
             -o-transform: scale(0.2);
@@ -24,10 +25,18 @@
         <p>{{ error }}</p>
     {% else %}
 
-        <body>
-            <iframe id="frame001" class="mini_widget" src="http://127.0.0.1/dashboard/widget/easyborrow-requests-handled/"> </iframe>
-            <iframe id="frame002" class="mini_widget" src="http://127.0.0.1/dashboard/widget/easyscan-requests/"> </iframe>
-        </body>
+        <div id="widgets">
+            <ul>
+                <li>
+                    <p>easyborrow requests by month</p>
+                    <iframe id="frame001" class="mini_widget" src="http://127.0.0.1/dashboard/widget/easyborrow-requests-handled/"> </iframe>
+                </li>
+                <li>
+                    <p>easyscan requests by month</p>
+                    <iframe id="frame002" class="mini_widget" src="http://127.0.0.1/dashboard/widget/easyscan-requests/"> </iframe>
+                </li>
+            </ul>
+        </div>
 
     {% endif %}  {% comment "end of `if error` at top" %}{% endcomment %}
 
