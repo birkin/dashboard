@@ -20,6 +20,7 @@ widget_prepper = WidgetPrepper()
 
 def info( request ):
     """ Returns info page. """
+    widget = Widget.objects.get( id=1 )
     return HttpResponse( 'This page will display "About" info, or redirect to the github ReadMe.' )
 
 
