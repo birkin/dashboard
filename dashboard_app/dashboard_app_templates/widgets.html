@@ -1,8 +1,11 @@
 {% extends "dashboard_app_templates/base.html" %}
 
 
-{% block page_styles %}
+{% block extra_css %}
     <style>
+        div#widgets {
+            margin-top: 2em;
+        }
         .mini_widget {
             width: 800px;
             height: 520px;
@@ -20,6 +23,12 @@
 
 
 {% block content %}
+
+<h1>dashboard &mdash; overview</h1>
+
+<hr/>
+
+<h3>(click chart for more info) <span id=#badge_note></span></h3>
 
     {% if error %}
         <p>{{ error }}</p>
