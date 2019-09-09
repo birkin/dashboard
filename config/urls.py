@@ -1,7 +1,3 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 from dashboard_app import views
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -13,18 +9,17 @@ admin.autodiscover()
 
 urlpatterns = [
 
-    url( r'^admin/', include(admin.site.urls) ),
-
+    ## primary app urls...
     url( r'^info/$',  views.info, name='info_url' ),
 
-    url( r'^request_widget/$',  views.request_widget, name='request_widget_url' ),
-
     url( r'^widgets/$',  views.widgets, name='widgets_url' ),
-
     url( r'^widget/(?P<identifier>[^/]+)/$',  views.widget, name='widget_url' ),
-
+    url( r'^request_widget/$',  views.request_widget, name='request_widget_url' ),
     url( r'^tag/(?P<tag>[^/]+)/$',  views.tag, name='tag_url' ),
+    url( r'^admin/', include(admin.site.urls) ),
 
+    ## support urls...
+    url( r'^bul_search/$', views.bul_search, name='bul_search_url' ),
     url( r'^shib_login/$',  views.shib_login, name='shib_login_url' ),
     url( r'^logout/$',  views.shib_logout, name='logout_url' ),
 
