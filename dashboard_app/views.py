@@ -1,16 +1,14 @@
-# -*- coding: utf-8 -*-
-
-from __future__ import unicode_literals
-
 import json, logging, os, pprint
+
+from dashboard_app import models
+from dashboard_app.lib.shib_auth import shib_login  # decorator
+from dashboard_app.lib.widget_helper import WidgetPrepper
+from dashboard_app.models import Widget
 from django.conf import settings as project_settings
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from dashboard_app import models
-from dashboard_app.lib.widget_helper import WidgetPrepper
-from dashboard_app.models import Widget
 
 log = logging.getLogger(__name__)
 # chart_maker = models.ChartMaker()
@@ -57,18 +55,24 @@ def tag( request, tag ):
     return HttpResponse( 'tag url' )
 
 
-def shib_login( request ):
-    """ Examines shib headers, sets session-auth, & returns user to request page. """
-    log.debug( 'in views.shib_login(); starting' )
-    if request.method == 'POST':  # from request_login.html
-        log.debug( 'in views.shib_login(); post detected' )
-        return HttpResponseRedirect( os.environ['DSHBRD__SHIB_LOGIN_URL'] )  # forces reauth if user clicked logout link
-    request.session['shib_login_error'] = ''  # initialization; updated when response is built
-    ( validity, shib_dict ) = shib_view_helper.check_shib_headers( request )
-    return_url = request.GET.get('return_url', reverse('info_url') )
-    return_response = shib_view_helper.build_response( request, validity, shib_dict, return_url )
-    log.debug( 'in views.shib_login(); about to return response' )
-    return return_response
+def bul_search( request ):
+    """ Triggered by user entering search term into banner-search-field.
+        Redirects query to search.library.brown.edu """
+    log.debug( 'request.__dict__, ```%s```' % pprint.pformat(request.__dict__) )
+    redirect_url = 'https://search.library.brown.edu?%s' % request.META['QUERY_STRING']
+    return HttpResponseRedirect( redirect_url )
+
+
+@shib_login
+def login( request ):
+    """ Handles authNZ, & redirects to admin.
+        Called by click on login or admin link. """
+    next_url = request.GET.get( 'next', None )
+    if not next_url:
+        redirect_url = reverse( 'admin:bul_cbp_app_tracker_changelist' )
+    else:
+        redirect_url = request.GET['next']  # will often be same page
+    return HttpResponseRedirect( redirect_url )
 
 
 def shib_logout( request ):
