@@ -20,7 +20,7 @@ urlpatterns = [
 
     ## support urls...
     url( r'^bul_search/$', views.bul_search, name='bul_search_url' ),
-    url( r'^shib_login/$',  views.shib_login, name='shib_login_url' ),
+    url( r'^login/$', views.login, name='login_url' ),
     url( r'^logout/$',  views.shib_logout, name='logout_url' ),
 
     url( r'^$',  RedirectView.as_view(pattern_name='info_url') ),
