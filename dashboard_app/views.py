@@ -23,7 +23,14 @@ def info( request ):
     return HttpResponse( 'This page will display "About" info, or redirect to the github ReadMe.' )
 
 
-def widgets( request ):
+def widgets_redirect( request ):
+    """ Redirects to all-widgets display. """
+    return_url = reverse( "widgets_url", kwargs={"identifier": "all"} )
+    log.debug( f'return_url, ```{return_url}```' )
+    return HttpResponseRedirect( return_url )
+
+
+def widgets( request, identifier ):
     """ Displays default page of widgets. """
     context = {}
     return render( request, 'dashboard_app_templates/widgets.html', context )
