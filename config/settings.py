@@ -58,7 +58,23 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
-TEMPLATES = json.loads( os.environ['DSHBRD__TEMPLATES_JSON'] )  # list of dict(s)
+# TEMPLATES = json.loads( os.environ['DSHBRD__TEMPLATES_JSON'] )  # list of dict(s)
+template_dirs = json.loads( os.environ['DSHBRD__TEMPLATES_JSON'] )  # json list
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': template_dirs,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = 'config.passenger_wsgi.application'
 
