@@ -5,56 +5,212 @@ dashboard info
 {% endblock page_title %}
 
 
+{% block custom_style %}
+    <style type="text/css">
+
+        #widget_container {
+            margin-left:30%;
+            margin-right:30%;
+
+            }
+
+        #widget {
+            position:relative;
+            border-top:none;
+            border-right:solid 1px;
+            border-bottom:solid 1px;
+            border-left:solid 1px;
+            height:95px;
+            background-color:rgb(240,240,240);
+            /*border-style:outset;*/
+            }
+
+        #title {
+            position:relative;
+            border-top:solid 1px;
+            border-right:solid 1px;
+            border-bottom:dotted 1px;
+            border-left:solid 1px;
+            padding-top:5px;
+            padding-bottom:5px;
+            background-color:rgb(200,200,200);
+            /*padding-left:20px;*/
+            /*border-style:outset;*/
+            }
+
+        #title p {
+            margin:0px;
+            padding:0px;
+            text-align:center;
+            /*font-style: bold;*/
+            }
+
+        #baseline {
+            position:absolute;
+            left:10px;
+            top:70px;
+            }
+
+        #best {
+            position:absolute;
+            left:10px;
+            top:10px;
+            }
+
+        #current {
+            position:absolute;
+            right:10px;
+            top:10px;
+            }
+
+        #trend {
+            position:absolute;
+            right:10px;
+            top:58px;
+            }
+
+        #trend a img {
+            border:none;
+            }
+
+        #more_info {
+            position:absolute;
+            left:38%;
+            top:30%;
+            }
+
+        #more_info a img {
+            border:none;
+            }
+
+    </style>
+{% endblock custom_style %}
+
+{% block head_title %}dashboard information{% endblock head_title %}
+
+{% block display_title %}dashboard_beta :: dashboard information{% endblock display_title %}
+
 {% block content %}
 
-<style>
-    h1 {
-        font-size: 2.5em;
-        margin-top: 2em;
-        text-transform: none }
-    div#rules {
-        margin-top: 3.5em; }
-    hr {
-        margin-top: 2em; }
-    dt, dd {
-        font-family:sans-serif;
-        margin-top: .5em; }
-    dt {
-       float:left;
-       clear:left;
-       text-align:right;
-       width:15%;
-       color:#bbb;
-       font-size: 125%; }
-    dd {
-       float:left;
-       margin-left:2em;
-       color:#999;
-       font-size: 125%; }
-    p {
-        font-size: 125%;
-        margin-top:1.5em; }
-    ul {
-        list-style-type: square;
-        margin-left: 2em;
-        font-size: 125%; }
-    li {
-        margin-top: .5em; }
-</style>
+    <p/>
 
- <h1>dashboard info (under construction)</h1>
-
-<div id="rules">
-    <p>This service...</p>
-    <p>If you have questions, feel free to email {{ email_general_help|urlize }}.</p>
-    <p>Links...</p>
+    <h3>On this page...</h3>
     <ul>
-        <li><a href="{% url 'dashboard_app.views.request_widget' %}">Request a widget</a></li>
-        <li><a href="{{ first_widget_url }}">Example individual widget</a></li>
-        <li><a href="{% url 'dashboard_app.views.tag' 'easyborrow' %}">Example widget tag</a></li>
+        <li><a href="#idea">The dashboard idea</a></li>
+        <li><a href="#widgets">Widgets</a></li>
+        <li><a href="#sample_widget">Sample widget</a></li>
+        <li><a href="#widget_detail_anchor">Widget detail</a></li>
+        <li><a href="#widget_list">Widget list</a></li>
+        <li><a href="#future">Visions</a></li>
+        <li><a href="#code">Code</a></li>
+        <li><a href="#credit">Credit</a></li>
     </ul>
-</div>
 
-<hr/>
+    <h3><a name="idea"></a>The dashboard idea</h3>
+    <p>The purpose of the dashboard is two-fold.</p>
+    <p>First, it aims to provide, at a glance, useful information about the flow of library data. The analogy to a car dashboard is apt. Just as a glance at the instruments on a car dashboard provides useful information about the car's speed, engine-temperature, and headlight-settings -- a glance at the 'widgets' that make up the Library dashboard provides useful information about the 'operation' of Josiah, easyBorrow, Illiad, etc.</p>
+    <p>Second, the implementation of the Library dashboard is intended to make it very easy for data-creators and managers to build widgets that they themselves and others can use. An administrative form will allow any library staff-member to create a widget by filling out basic information, pasting in data-values in a specified format. From this information, all of the data shown below is created automatically.</p>
+    <p>Of course, manually updating widgets is not ideal; the goal is to automate the population of widget data. However, there are many data-producers in the Library that currently create data manually. The dashboard offers the possibility to expose this data immediately and easily. ITS staff can then work on automating data updates.</p>
+
+    <h3><a name="widgets"></a>Widgets</h3>
+    <p>If you're new to the 'widgets' that make up the Library dashboard, know that it'll take a solid five minutes to get the hang of understanding what you're looking at. Once you've learned how to interpret one widget, though, you'll understand any widget, for although each widget displays information about a different piece of the library, they're all organized the same.</p>
+
+    <h3><a name="sample_widget"></a>A sample widget</h3>
+    <p>Look at the widget below. At first, of course, you won't know what any of the five indicators means. But after the following explanation you'll understand any widget, and see how at a glance each provides loads of useful information.</p>
+
+    {% include "dashboard/widget_demo.html" %}
+
+    <ul>
+        <li><strong>The 'title'</strong><br/>
+            The title is simple. Most obviously, it lets you know that this widget provides an overview of Rockefeller Library checkouts. If you hover over the title, a text-box appears providing a some additional useful information: a) that the time-period is ten-years; b) that the widget's data is not fixed in time, but will be updated each year; and c) that all types of checkouts are included, implying the counts include laptops and projectors as well as books.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Bottom-left: the 'baseline' count</strong><br/>
+            The baseline is the starting point of the data. In this case, it's ten years ago, and the value thus changes each year. In other widgets, the baseline might be the year a particular initiative started, and would thus remain fixed. Regardless, it's the starting point of the data. Note that hovering over the baseline number provides a bit of additional information as to the meaning of the number.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Top-left: the 'best' count</strong><br/>
+            This number represents the 'best' value for the period covered. In this and many widgets, it will be the 'highest' number for the period. But if this widget were reporting on 'Missing Books' for a period, the 'best' number would be the lowest. Hovering over this number provides a simple reminder that in this widget, a higher count is better.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Top-right: the 'current' count</strong><br/>
+            This number represents most recent count. The aim of the dashboard is that this piece of information can be better interpreted given its presentation in-context.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Bottom-right: the 'trend' indicator</strong><br/>
+            This indicator provides two pieces of information. First, direction of the arrow represents whether the trend is rising (upward arrow) or falling. Second, the color of the arrow indicates whether the trend is good (blue) or bad (red). The default trend-calculation is the difference from the current count (top-right) and the previous count (not shown). Some widgets may define their trend-period as, for example, the most-recent fourth of the data. Hovering over the arrow will often provide additional information.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Center: the 'more-info' button</strong><br/>
+            A click of this button will yield more detailed data, and may contain links to further relevant information. The button itself will usually appear as a mini-graph of the actual data. Hovering over this button will always show a data-contact name and email address.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Also</strong><br/>
+            Note that each widget can be accessed by a human-readable url. In this case it is: <a href="http://library.brown.edu/dashboard/widget/{{ widget.slug }}/">http://library.brown.edu/dashboard/widget/{{ widget.slug }}/</a>. Also note that the resulting widget is an html-fragment that can easly be inserted into an existing html page, offering easy re-use.
+        </li>
+
+    </ul>
+
+    <h3><a name="widget_detail_anchor"></a>Widget detail example</h3>
+    <p>If you click on a widget's mini-chart, you'll be presented with more information about the data underlying the widget:</p>
+
+    {% include "dashboard/widget_detail_demo_static.html" %}
+
+    <h3>Widget detail notes</h3>
+    <ul>
+
+        <li><strong>All data displayed automatically</strong><br/>
+            As noted above, this extra information is displayed automatically based on the widget-form used to create the widget.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Contact information</strong><br/>
+            Every widget will have both a contact name and email address.<br/>
+            <br/>
+        </li>
+
+        <li><strong>More info</strong><br/>
+            Most widgets will have a url to a page with more details about the information represented by the widget. Since widgets provide trend information, they don't contain lots of historical or pie-chart-type info. The additional info-page may be a place to find that information.<br/>
+            <br/>
+        </li>
+
+        <li><strong>RSS feed</strong><br/>
+            Implementing the best-practice of exposing raw-data instead of just pre-packaged data, this RSS feed provides each label-value pair, and, as a bonus, a link to this detail chart with the selected data-point highlighted.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Url</strong><br/>
+            Just as each widget includes a link to this detail-presentation, this presentation lists an explicit link to the widget itself.<br/>
+            <br/>
+        </li>
+
+        <li><strong>Also</strong><br/>
+            As is true for a widget, this detail-presentation is an html-fragment that can easily be included into an existing html page, offering easy re-use.
+        </li>
+
+    </ul>
+
+    <h3><a name="widget_list"></a>Widget listing</h3>
+
+    <p>Currently under development, the list of all widgets can be found at <a href="http://library.brown.edu/dashboard/widgets/">http://library.brown.edu/dashboard/widgets/</a>. By default all widgets will be shown, but the selection will be able to be limited by selecting a tag from the tag-list column on the right.</p>
+
+    <h3><a name="future"></a>Future visions</h3>
+        <ul>
+            <li>As the list of widgets grows, it will be useful for a user to see only selected widgets. To that end, a 'My Widgets' page will be implemented, allowing a user to select desired individual widgets or widget-tags.</li><br/>
+            <li>Thinking broadly -- campus-wide -- if other departments adopt the dashboard idea, a facility could even be developed for, say, the chair of the French department to 'subscribe' to a Library 'French New-Titles' widget and a Library 'French-Language Checkouts' widget -- as well as a Registrar widget representing the numbers of freshmen enrolled in French 1, and another Registrar widget representing numbers of French concentrators.</li>
+        </ul>
+
+    <h3><a name="code"></a>Code</h3>
+    <p>Spurred on by Dale Askey's <a href="http://access2008.blog.lib.mcmaster.ca/program/#opensource">Access 2008 talk</a> and <a href="http://journal.code4lib.org/articles/527">code4lib journal article</a> challenging our community to be better at sharing code, <a href="http://bitbucket.org/bul/dashboard-app/">here</a> is the dashboard code.</p><br/>
+
+    <h3><a name="credit"></a>Credit</h3>
+    <p>Thanks to the folk over at Brown's <a href="http://www.brown.edu/Administration/Institutional_Research/">Office of Institutional Research</a> for inspiring the Library's dashboard initiative.</p><br/>
+
 
 {% endblock content %}
