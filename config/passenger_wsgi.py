@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 """
 WSGI config.
 
@@ -10,7 +8,9 @@ https://docs.djangoproject.com/en/1.11/howto/deployment/wsgi/
 """
 
 import os, pprint, sys
+
 import shellvars
+from django.core.wsgi import get_wsgi_application
 
 
 PROJECT_DIR_PATH = os.path.dirname( os.path.dirname(os.path.abspath(__file__)) )
@@ -18,12 +18,6 @@ ENV_SETTINGS_FILE = os.environ['DSHBRD__ENV_SETTINGS_PATH']  # set in `conf.d/pa
 
 ## update path
 sys.path.append( PROJECT_DIR_PATH )
-
-## Note: no need to activate the virtual-environment
-## - the project's httpd/passenger.conf section allows specification of the python-path via `PassengerPython`, which auto-activates it
-## - the auto-activation provides access to env-modules, but not, automatically, env-vars
-## - env-vars loading under python3.x occurs via the `SenEnv` entry in the project's passenger.conf section
-##   - requires apache env_module; info: <https://www.phusionpassenger.com/library/indepth/environment_variables.html>
 
 ## reference django settings
 os.environ[u'DJANGO_SETTINGS_MODULE'] = 'config.settings'  # so django can access its settings
@@ -34,5 +28,4 @@ for ( key, val ) in var_dct.items():
     os.environ[key.decode('utf-8')] = val.decode('utf-8')
 
 ## gogogo
-from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
