@@ -13,7 +13,7 @@ urlpatterns = [
     url( r'^info/$',  views.info, name='info_url' ),
     url( r'^widgets/$',  views.widgets_redirect, name='widgets_redirect_url' ),
     url( r'^widgets/(?P<identifier>[^/]+)/$',  views.widgets, name='widgets_url' ),
-    url( r'^widget/(?P<identifier>[^/]+)/$', views.widget, name='widget_url' ),
+    url( r'^widget_detail/(?P<identifier>[^/]+)/$', views.widget_detail, name='widget_detail_url' ),
     url( r'^request_widget/$', views.request_widget, name='request_widget_url' ),
     url( r'^tag/(?P<tag>[^/]+)/$', views.tag, name='tag_url' ),
     url( r'^admin/', include(admin.site.urls) ),
