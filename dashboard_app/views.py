@@ -32,6 +32,8 @@ def info( request ):
         minichart_values.append( value )
     minichart_percentages = misc.makeChartPercentages( minichart_values )
     minichart_range = misc.makeChartRanges( minichart_percentages )
+    widget_detail_url = reverse( "widget_detail_url", kwargs={"identifier": "foo"} )
+    widget_detail_url_root = widget_detail_url.replace( 'foo/', '' )
     page_dict = {
         'media_directory':project_settings.MEDIA_URL,
         'widget':widget,
@@ -39,6 +41,7 @@ def info( request ):
         'trend_color':trend_color_dict[ widget.trend_color ],
         'minichart_percentages':minichart_percentages,
         'minichart_range':minichart_range,
+        'widget_detail_url_root': widget_detail_url_root
         }
     return render( request, 'dashboard_app_templates/info.html', page_dict )
 
@@ -57,7 +60,7 @@ def widgets( request, identifier ):
     # return HttpResponse( 'This page will display a summary "small-view" of all the widgets.' )
 
 
-def widget( request, identifier ):
+def widget_detail( request, identifier ):
     """ Displays requested widget. """
     widget = get_object_or_404( Widget, slug=identifier )
     log.debug( 'widget found for identifier, `{}`'.format(identifier) )
