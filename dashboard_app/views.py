@@ -1,6 +1,7 @@
 import json, logging, os, pprint
 
 from dashboard_app import models
+from dashboard_app.lib import misc
 from dashboard_app.lib.shib_auth import shib_login  # decorator
 from dashboard_app.lib.widget_helper import WidgetPrepper
 from dashboard_app.models import Widget
@@ -21,7 +22,25 @@ widget_prepper = WidgetPrepper()
 def info( request ):
     """ Returns info page. """
     widget = Widget.objects.get( id=1 )
-    return HttpResponse( 'This page will display "About" info, or redirect to the github ReadMe.' )
+    trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
+    trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
+    minichart_dcts = misc.extractMinichartData( eval(widget.data_points) )
+    # minichart_values = [ minichart_tuples[0][1], minichart_tuples[1][1], minichart_tuples[2][1], minichart_tuples[3][1]  ]
+    minichart_values = []
+    for dct in minichart_dcts:
+        value = list( dct.items() )[0][1]
+        minichart_values.append( value )
+    minichart_percentages = misc.makeChartPercentages( minichart_values )
+    minichart_range = misc.makeChartRanges( minichart_percentages )
+    page_dict = {
+        'media_directory':project_settings.MEDIA_URL,
+        'widget':widget,
+        'trend_direction':trend_direction_dict[ widget.trend_direction ],
+        'trend_color':trend_color_dict[ widget.trend_color ],
+        'minichart_percentages':minichart_percentages,
+        'minichart_range':minichart_range,
+        }
+    return render( request, 'dashboard_app_templates/info.html', page_dict )
 
 
 def widgets_redirect( request ):
