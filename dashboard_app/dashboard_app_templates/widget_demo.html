@@ -1,0 +1,28 @@
+{% load humanize %}
+
+<div id="widget_container">
+
+	<div id="title"><p title="{{ widget.title_info }}"><strong>{{ widget.title }}</strong></p></div>
+
+	<div id="widget">
+
+		<div id="baseline" title="'baseline' -- {{ widget.baseline_info }}">{{ widget.baseline_value|intcomma }}</div>
+
+		<div id="best" title="'best' -- {{ widget.best_value_info }}">{{ widget.best_value|intcomma }}</div>
+
+		<div id="current" title="'current' -- {{ widget.current_value_info }}">{{ widget.current_value|intcomma }}</div>
+
+		<div id="trend" title="'trend' -- {{ widget.trend_info }}">
+			<img src="{{media_directory}}images/{{ trend_direction }}_{{ trend_color }}.png"/>
+		</div>
+
+		<div id="more_info" title="'more info' -- Rough summary of data. Click for more detailed info. Widget contact is {{ widget.data_contact_name }}, at {{ widget.data_contact_email_address }}.">
+			<a href="/dashboard/widget_detail/{{ widget.slug }}/">
+				<img src="http://chart.apis.google.com/chart?cht=lc&amp;chs=75x40&amp;chd=t:{{ minichart_percentages.0 }},{{ minichart_percentages.1 }},{{ minichart_percentages.2 }},{{ minichart_percentages.3 }}&amp;chds={{ minichart_range.0 }},{{ minichart_range.1 }}" alt="Chart with line in yellow" />
+				<!-- <img src="{{media_directory}}images/chart.gif"/> -->
+			</a>
+		</div>
+
+	</div>
+
+</div>
