@@ -1,141 +1,41 @@
 {% load humanize %}
 
-<html>
-
-
-{% if error %}
-
-<p>{{ error }}</p>
-
-{% else %}
-
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-
-
 <div id="widget_detail">
-
-	<div id="chart_div"></div>
-
-    <hr/>
-
-	<div id="chart_info">
-		<ul>
-			<li>Data contact: <a href="mailto:{{ data_contact_email }}">{{ data_contact_name }}</a></li>
-			{% if more_widget_info_url %}
-			<li>More info: <a href="{{ more_widget_info_url }}">{{ more_widget_info_url }}</a></li>
-			{% endif %}
-			<li>Widget data: <a href="{{ widget_data_url }}">{{ widget_data_url }}</a></li>
-			<li>Widget url: <a href="{{ widget_url }}">{{ widget_url }}</a></li>
-		</ul>
-	</div>
-
+    <style>
+        #big_chart_container {
+            background-color:EFEFEF;
+            height:395px;
+            width:820px;
+            }
+        #big_chart_image {
+            padding:10px;
+            }
+    </style>
+    <div id="big_chart_container">
+        <div id="big_chart_image">
+            <img src="http://chart.apis.google.com/chart?cht=lc
+&amp;chs=800x375
+&amp;chd=t:{% for percentage in detailchart_percentages %}{{percentage}}{% if not forloop.last %},{% endif %}{% endfor %}
+&amp;chds={{ detailchart_range.0 }},{{ detailchart_range.1 }}
+&amp;chtt={{ widget.title|urlencode }}
+&amp;chts=76A4FB,20
+&amp;chf=c,lg,0,76A4FB,1,ffffff,0|bg,s,EFEFEF
+&amp;chxt=x,x,x
+&amp;chxl=0:|{% for key in detailchart_keys %}{{ key }}|{% endfor %}1:|{% for value in detailchart_values %}{{ value|intcomma }}|{% endfor %}2:|{{ widget.key_label }} and {{ widget.value_label }}
+&amp;chxp=0|1|2,50
+&amp;chxs=2,76A4FB,12,0
+{% if data_index %}
+&amp;chm=c,FF0000,0,{{ data_index|add:"-1" }}.0,20.0 {% comment %} The 'add' template-filter is used because the url passes a 1-based index-number to the template, but the google-chart-api uses a zero-based index-number here. {% endcomment %}
+{% endif %}"
+                alt="detail line-chart showing {{ widget.key_label }} and {{ widget.value_label }}" />
+        </div> <!-- end div id="big_chart_image" -->
+    </div> <!-- end div id="big_chart_container" -->
+    <ul>
+        <li>Data contact: <a href="mailto:{{ widget.data_contact_email_address }}">{{ widget.data_contact_name }}</a></li>
+        {% if widget.more_info_url %}
+        <li>More info: <a href="{{ widget.more_info_url }}">{{ widget.more_info_url }}</a></li>
+        {% endif %}
+        <li>RSS feed of data: <a href="{{ host }}feeds/widget_data/{{ widget.slug }}/">{{ host }}feeds/widget_data/{{ widget.slug }}/</a></li>
+        <li>Widget url: <a href="{{ host }}widget/{{ widget.slug }}/">{{ host }}widget/{{ widget.slug }}/</a></li>
+    </ul>
 </div> <!-- end div id="widget_detail" -->
-
-
-
-<script type="text/javascript">
-
-    google.charts.load('current', {'packages':['line', 'corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-
-        var button = document.getElementById('change-chart');
-        var chartDiv = document.getElementById('chart_div');
-
-        // var data = new google.visualization.DataTable();
-        // data.addColumn('number', 'not shown; x-axis increments');
-        // data.addColumn('number', "{{ line_title }}");
-        // data.addRows([
-        //     [0, 3974],
-        //     [1, 2923],
-        //     [2, 3138],
-        //     [3, 1660],
-        //     [4, 3631],
-        //     [5, 3054],
-        // ]);
-
-        var data = new google.visualization.DataTable();
-        data.addColumn('number', 'not shown; x-axis increments');
-        data.addColumn('number', "{{ line_title }}");
-        data.addRows([
-            {% for element in template_row_data %}
-            {{ element }},
-            {% endfor %}
-        ]);
-
-        var options = {
-            title: "{{ chart_title|safe }}",  // `safe` allows newline characters to be entered in db for multi-line titles
-            width: 1000,
-            height: 500,
-            lineWidth: 5,
-            trendlines: {
-              0: {
-                type: 'linear',
-                color: 'grey',
-                lineWidth: 5,
-                // pointSize: 5,
-                opacity: 0.3,
-                // showR2: true,
-                visibleInLegend: true,
-                labelInLegend: 'trend',
-                pointsVisible: false,
-                },
-            },
-            curveType: 'function',
-            legend: {
-                position: 'bottom',  // 'none'
-            },
-            pointSize: 5,
-            // chartArea:{
-            //     left: 200,
-            //     top: 200,
-            //     width:'50%',
-            //     height:'75%'
-            // },
-            // },
-            // hAxis: {
-            //     // title: 'foo',
-            //     ticks: [ // labels for x-axis points
-            //         {v:0, f:'2014-09'},
-            //         {v:1, f:'2014-10'},
-            //         {v:2, f:'2014-11'},
-            //         {v:3, f:'2014-12'},
-            //         {v:4, f:'2015-01'},
-            //         {v:5, f:'2015-02'},
-            //         ]
-            //     },
-            hAxis: {
-                // title: 'foo',
-                ticks: [ // labels for x-axis points
-                    {% for w_t_element in widget_tick_data %}
-                    {{ w_t_element | safe }},
-                    {% endfor %}
-                    ]
-                },
-            vAxis: {
-              // title: 'bar',
-              maxValue: {{ max_y }},  // 5% over max count
-            },
-            // colors: ['red'], // line-color
-            // backgroundColor: '',
-        };
-
-        function drawChart() {
-            var chart = new google.visualization.LineChart( chartDiv );
-            chart.draw( data, options );
-        }
-
-        drawChart();
-
-    } // end function drawChart()
-
-</script>
-
-
-{% endif %}  {% comment "end of `if error` at top" %}{% endcomment %}
-
-
-</html>

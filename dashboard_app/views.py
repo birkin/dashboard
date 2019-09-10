@@ -60,16 +60,72 @@ def widgets( request, identifier ):
     # return HttpResponse( 'This page will display a summary "small-view" of all the widgets.' )
 
 
-def widget_detail( request, identifier ):
-    """ Displays requested widget. """
+def widget_detail( request, identifier, data_index=0 ):
+    """ Displays requested widget.
+        TODO -- only go through the detailchart_tuples (which aren't tuples) once, and break out the key/values in the same loop. """
     widget = get_object_or_404( Widget, slug=identifier )
     log.debug( 'widget found for identifier, `{}`'.format(identifier) )
-    context = widget_prepper.build_context( widget, request.scheme, request.get_host() )
-    if request.GET.get( 'format', None ) == 'json':
-        output = widget_prepper.build_json_widget_output( widget, request.GET.get('callback', None), context )
-        return HttpResponse( output, content_type = 'application/javascript; charset=utf-8' )
-    else:
-        return render( request, 'dashboard_app_templates/widget_detail.html', context )
+    detailchart_tuples = eval( widget.data_points )
+
+    detailchart_values = []
+    for element_dct in detailchart_tuples:
+        value = list( element_dct.items() )[0][1]
+        detailchart_values.append( value )
+
+    detailchart_percentages = misc.makeChartPercentages( detailchart_values )
+    detailchart_range = misc.makeChartRanges( detailchart_percentages )
+
+    detailchart_keys = []
+    for element_dct in detailchart_tuples:
+        key = list( element_dct.items() )[0][0]
+        detailchart_keys.append( key )
+
+    page_dict = {
+        'host': 'FOO_HOST',
+        'widget': widget,
+        'detailchart_percentages': detailchart_percentages,
+        'detailchart_range': detailchart_range,
+        'detailchart_keys': detailchart_keys,
+        'detailchart_values': detailchart_values,
+        'data_index':int(data_index)
+        # 'data_index':int(data_index) - 1 # so url can look 1-based, whereas google chart-api is zero-based
+        }
+    return render( request, 'dashboard_app_templates/widget_detail.html', page_dict )
+
+
+        # def widgetDetail(request, identifier, data_index=0):
+
+        #     from dashboard_app import settings_app
+        #     from dashboard_app.models import Widget
+
+        #     widget_instance = Widget.objects.get( slug=identifier )
+
+        #     detailchart_tuples = eval( widget_instance.data_points )
+
+        #     detailchart_values = []
+        #     for element in detailchart_tuples:
+        #         detailchart_values.append( element[1] )
+
+        #     detailchart_percentages = utility_code.makeChartPercentages( detailchart_values )
+
+        #     detailchart_range = utility_code.makeChartRanges( detailchart_percentages )
+
+        #     detailchart_keys = []
+        #     for element in detailchart_tuples:
+        #         detailchart_keys.append( element[0] )
+
+        #     page_dict = {
+        #         'host':settings_app.HOST_URL_BASE,
+        #         'widget':widget_instance,
+        #         'detailchart_percentages':detailchart_percentages,
+        #         'detailchart_range':detailchart_range,
+        #         'detailchart_keys':detailchart_keys,
+        #         'detailchart_values':detailchart_values,
+        #         'data_index':int(data_index)
+        #         # 'data_index':int(data_index) - 1 # so url can look 1-based, whereas google chart-api is zero-based
+        #         }
+
+        #     return render_to_response( 'dashboard/detail.html', page_dict )
 
 
 def request_widget( request ):

@@ -1,0 +1,141 @@
+{% load humanize %}
+
+<html>
+
+
+{% if error %}
+
+<p>{{ error }}</p>
+
+{% else %}
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
+<div id="widget_detail">
+
+	<div id="chart_div"></div>
+
+    <hr/>
+
+	<div id="chart_info">
+		<ul>
+			<li>Data contact: <a href="mailto:{{ data_contact_email }}">{{ data_contact_name }}</a></li>
+			{% if more_widget_info_url %}
+			<li>More info: <a href="{{ more_widget_info_url }}">{{ more_widget_info_url }}</a></li>
+			{% endif %}
+			<li>Widget data: <a href="{{ widget_data_url }}">{{ widget_data_url }}</a></li>
+			<li>Widget url: <a href="{{ widget_url }}">{{ widget_url }}</a></li>
+		</ul>
+	</div>
+
+</div> <!-- end div id="widget_detail" -->
+
+
+
+<script type="text/javascript">
+
+    google.charts.load('current', {'packages':['line', 'corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+        var button = document.getElementById('change-chart');
+        var chartDiv = document.getElementById('chart_div');
+
+        // var data = new google.visualization.DataTable();
+        // data.addColumn('number', 'not shown; x-axis increments');
+        // data.addColumn('number', "{{ line_title }}");
+        // data.addRows([
+        //     [0, 3974],
+        //     [1, 2923],
+        //     [2, 3138],
+        //     [3, 1660],
+        //     [4, 3631],
+        //     [5, 3054],
+        // ]);
+
+        var data = new google.visualization.DataTable();
+        data.addColumn('number', 'not shown; x-axis increments');
+        data.addColumn('number', "{{ line_title }}");
+        data.addRows([
+            {% for element in template_row_data %}
+            {{ element }},
+            {% endfor %}
+        ]);
+
+        var options = {
+            title: "{{ chart_title|safe }}",  // `safe` allows newline characters to be entered in db for multi-line titles
+            width: 1000,
+            height: 500,
+            lineWidth: 5,
+            trendlines: {
+              0: {
+                type: 'linear',
+                color: 'grey',
+                lineWidth: 5,
+                // pointSize: 5,
+                opacity: 0.3,
+                // showR2: true,
+                visibleInLegend: true,
+                labelInLegend: 'trend',
+                pointsVisible: false,
+                },
+            },
+            curveType: 'function',
+            legend: {
+                position: 'bottom',  // 'none'
+            },
+            pointSize: 5,
+            // chartArea:{
+            //     left: 200,
+            //     top: 200,
+            //     width:'50%',
+            //     height:'75%'
+            // },
+            // },
+            // hAxis: {
+            //     // title: 'foo',
+            //     ticks: [ // labels for x-axis points
+            //         {v:0, f:'2014-09'},
+            //         {v:1, f:'2014-10'},
+            //         {v:2, f:'2014-11'},
+            //         {v:3, f:'2014-12'},
+            //         {v:4, f:'2015-01'},
+            //         {v:5, f:'2015-02'},
+            //         ]
+            //     },
+            hAxis: {
+                // title: 'foo',
+                ticks: [ // labels for x-axis points
+                    {% for w_t_element in widget_tick_data %}
+                    {{ w_t_element | safe }},
+                    {% endfor %}
+                    ]
+                },
+            vAxis: {
+              // title: 'bar',
+              maxValue: {{ max_y }},  // 5% over max count
+            },
+            // colors: ['red'], // line-color
+            // backgroundColor: '',
+        };
+
+        function drawChart() {
+            var chart = new google.visualization.LineChart( chartDiv );
+            chart.draw( data, options );
+        }
+
+        drawChart();
+
+    } // end function drawChart()
+
+</script>
+
+
+{% endif %}  {% comment "end of `if error` at top" %}{% endcomment %}
+
+
+</html>
