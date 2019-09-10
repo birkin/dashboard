@@ -17,7 +17,8 @@
 		</div>
 
 		<div id="more_info" title="'more info' -- Rough summary of data. Click for more detailed info. Widget contact is {{ widget.data_contact_name }}, at {{ widget.data_contact_email_address }}.">
-			<a href="/dashboard/widget_detail/{{ widget.slug }}/">
+			<!-- <a href="/dashboard/widget_detail/{{ widget.slug }}/"> -->
+            <a href="{{ widget_detail_url_root }}{{ widget.slug }}/">
 				<img src="http://chart.apis.google.com/chart?cht=lc&amp;chs=75x40&amp;chd=t:{{ minichart_percentages.0 }},{{ minichart_percentages.1 }},{{ minichart_percentages.2 }},{{ minichart_percentages.3 }}&amp;chds={{ minichart_range.0 }},{{ minichart_range.1 }}" alt="Chart with line in yellow" />
 				<!-- <img src="{{media_directory}}images/chart.gif"/> -->
 			</a>
