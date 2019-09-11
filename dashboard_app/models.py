@@ -70,7 +70,7 @@ class Widget(models.Model):
     data_contact_email_address = models.EmailField()
     more_info_url = models.URLField( blank=True, help_text='Not required, but strongly suggested.' )
     active = models.BooleanField( default=True, help_text='Means data is still being collected for this widget.' )
-    # tags = models.ManyToManyField( 'Tag', blank=True, null=True )
+    tags = models.ManyToManyField( 'Tag', blank=True, null=True )
 
     def __unicode__(self):
         return self.title
