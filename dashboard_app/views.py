@@ -1,10 +1,10 @@
 import json, logging, os, pprint
 
-from dashboard_app import models
+from dashboard_app import models, settings_app
 from dashboard_app.lib import misc
 from dashboard_app.lib.shib_auth import shib_login  # decorator
 from dashboard_app.lib.widget_helper import WidgetPrepper
-from dashboard_app.models import Widget
+from dashboard_app.models import Tag, Widget
 from django.conf import settings as project_settings
 from django.contrib.auth import logout
 from django.core.urlresolvers import reverse
@@ -34,7 +34,11 @@ def info( request ):
     minichart_range = misc.makeChartRanges( minichart_percentages )
     widget_detail_url = reverse( "widget_detail_url", kwargs={"identifier": "foo"} )
     widget_detail_url_root = widget_detail_url.replace( 'foo/', '' )
+    # trend_image_url = f'{}/images/{trend_direction}_{trend_color}.png'
+    trend_image = f'{trend_direction_dict[widget.trend_direction]}_{trend_color_dict[widget.trend_color]}.png'
+    log.debug( f'trend_image, `{trend_image}`' )
     page_dict = {
+        'trend_image': trend_image,
         'media_directory':project_settings.MEDIA_URL,
         'widget':widget,
         'trend_direction':trend_direction_dict[ widget.trend_direction ],
@@ -56,8 +60,26 @@ def widgets_redirect( request ):
 def widgets( request, identifier ):
     """ Displays default page of widgets. """
     context = {}
-    return render( request, 'dashboard_app_templates/widgets.html', context )
-    # return HttpResponse( 'This page will display a summary "small-view" of all the widgets.' )
+    # get widgets
+    widgets = []
+    if identifier == 'all':
+        query = Widget.objects.all()
+    else:
+        tag = Tag.objects.get( slug=identifier )
+        query = tag.widget_set.all().order_by('title')
+    for widget in query:
+        if 'INVALID_DATA' not in widget.data_points:
+            widgets.append( widget )
+    tags = Tag.objects.all()
+    page_dict = {
+        'media_directory':project_settings.MEDIA_URL,
+        'project_settings':project_settings,
+        'widget_settings':settings_app,
+        'widgets':widgets,
+        'tags':tags,
+        }
+    # return render_to_response( 'dashboard/widget_list.html', page_dict )
+    return render( request, 'dashboard_app_templates/widget_list.html', page_dict )
 
 
 def widget_detail( request, identifier, data_index=0 ):
@@ -91,41 +113,6 @@ def widget_detail( request, identifier, data_index=0 ):
         # 'data_index':int(data_index) - 1 # so url can look 1-based, whereas google chart-api is zero-based
         }
     return render( request, 'dashboard_app_templates/widget_detail.html', page_dict )
-
-
-        # def widgetDetail(request, identifier, data_index=0):
-
-        #     from dashboard_app import settings_app
-        #     from dashboard_app.models import Widget
-
-        #     widget_instance = Widget.objects.get( slug=identifier )
-
-        #     detailchart_tuples = eval( widget_instance.data_points )
-
-        #     detailchart_values = []
-        #     for element in detailchart_tuples:
-        #         detailchart_values.append( element[1] )
-
-        #     detailchart_percentages = utility_code.makeChartPercentages( detailchart_values )
-
-        #     detailchart_range = utility_code.makeChartRanges( detailchart_percentages )
-
-        #     detailchart_keys = []
-        #     for element in detailchart_tuples:
-        #         detailchart_keys.append( element[0] )
-
-        #     page_dict = {
-        #         'host':settings_app.HOST_URL_BASE,
-        #         'widget':widget_instance,
-        #         'detailchart_percentages':detailchart_percentages,
-        #         'detailchart_range':detailchart_range,
-        #         'detailchart_keys':detailchart_keys,
-        #         'detailchart_values':detailchart_values,
-        #         'data_index':int(data_index)
-        #         # 'data_index':int(data_index) - 1 # so url can look 1-based, whereas google chart-api is zero-based
-        #         }
-
-        #     return render_to_response( 'dashboard/detail.html', page_dict )
 
 
 def request_widget( request ):
