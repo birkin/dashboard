@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import datetime, json, logging, os, pprint, itertools
+
 from django.conf import settings as project_settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -9,6 +10,26 @@ from django.utils.text import slugify
 
 
 log = logging.getLogger(__name__)
+
+
+class Tag(models.Model):
+    name = models.CharField( unique=True, max_length=50 )
+    slug = models.SlugField()
+    # slug = slug = models.SlugField( unique=True, prepopulate_from=['name'], help_text='Lowercase, no spaces (use hyphens instead). Auto-generated when first creating Tag name.' )
+
+    def __str__(self):
+        return self.name
+
+  # class Admin:
+  #   ordering = ('name',)
+  #   list_display = ( 'name', 'slug' )
+  #   save_on_top = True
+
+    class Meta:
+        ordering = ('name',)
+
+    # end class Tag()
+
 
 
 class Widget(models.Model):
