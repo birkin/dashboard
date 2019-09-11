@@ -1,4 +1,6 @@
+{% load staticfiles %}
 {% load humanize %}
+
 
 <div id="widget_container">
 
@@ -13,7 +15,8 @@
 		<div id="current" title="'current' -- {{ widget.current_value_info }}">{{ widget.current_value|intcomma }}</div>
 
 		<div id="trend" title="'trend' -- {{ widget.trend_info }}">
-			<img src="{{media_directory}}images/{{ trend_direction }}_{{ trend_color }}.png"/>
+			<!-- <img src="{{media_directory}}images/{{ trend_direction }}_{{ trend_color }}.png"/> -->
+            <img src="{% static 'images/' %}{{ trend_image }}"/>
 		</div>
 
 		<div id="more_info" title="'more info' -- Rough summary of data. Click for more detailed info. Widget contact is {{ widget.data_contact_name }}, at {{ widget.data_contact_email_address }}.">

@@ -1,0 +1,77 @@
+{% extends "dashboard_app_templates/base.html" %}
+
+{% block custom_style %}
+	<style type="text/css">
+
+		#widget_container {
+			postion:absolute;
+			margin-left:10px;
+			}
+
+		#tag_list {
+			float:left;
+			/*float:right;*/
+			/*margin-left:400px;*/
+			/*margin-top:100px;*/
+			}
+
+		#orangecontent {
+			margin-bottom: 30px;
+			}
+
+		#content_area {
+			/*position:relative;*/
+			}
+
+		#widget_area {
+			float:left;
+			width:360px;
+			margin-left:30px;
+			}
+
+		.widget_section {
+			/*position:relative;*/
+			width:355px;
+			margin-bottom:30px;
+			}
+
+		.widget_info {
+			width:350px;
+			}
+
+/*		#widget_section {
+			width:300px;
+			margin-left:100px;
+			padding-left:100px;
+			}	*/
+
+	</style>
+{% endblock custom_style %}
+
+{% block head_title %} widget list{% endblock head_title %}
+
+{% block display_title %}dashboard_beta :: widget list{% endblock display_title %}
+
+{% block content %}
+
+	<div id="content_area">
+
+		<div id="widget_area">
+			{% for widget in widgets %}
+				<div class="widget_section">
+					{% include 'dashboard_app_templates/widget.html' %}
+					<p>Tags: {% for tag in widget.tags.all %}<a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+				</div> <!-- end div class="widget_section" -->
+			{% endfor %}
+		</div> <!-- end divid="widget_area" -->
+
+		<div id="tag_list">
+			<p><a href="/dashboard/widgets/all/">( list all tags )</a></p>
+			{% for tag in tags %}
+				<p><a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a></p>
+			{% endfor %}
+		</div> <!-- end div id="tag_list" -->
+
+	</div> <!-- end div id="content_area" -->
+
+{% endblock content %}
