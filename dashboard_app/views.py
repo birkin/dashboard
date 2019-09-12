@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404, render
 
 log = logging.getLogger(__name__)
 # chart_maker = models.ChartMaker()
-minichart_maker = models.MinichartMaker()
+minichart_maker = misc.MinichartMaker()
 shib_view_helper = models.ShibViewHelper()
 widget_helper = models.WidgetHelper()
 widget_prepper = WidgetPrepper()
@@ -21,6 +21,7 @@ widget_prepper = WidgetPrepper()
 
 def info( request ):
     """ Returns info page. """
+    log.debug( '\n\nstarting info()' )
     widget = Widget.objects.get( id=1 )
     trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
     trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
@@ -35,6 +36,7 @@ def info( request ):
     widget_detail_url = reverse( "widget_detail_url", kwargs={"identifier": "foo"} )
     widget_detail_url_root = widget_detail_url.replace( 'foo/', '' )
     # trend_image_url = f'{}/images/{trend_direction}_{trend_color}.png'
+    log.debug( f'widget.trend_direction, `{widget.trend_direction}`; widget.trend_color, `{widget.trend_color}`' )
     trend_image = f'{trend_direction_dict[widget.trend_direction]}_{trend_color_dict[widget.trend_color]}.png'
     log.debug( f'trend_image, `{trend_image}`' )
     page_dict = {
