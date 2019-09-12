@@ -1,6 +1,24 @@
-# -*- coding: utf-8 -*-
+import logging
 
 import numpy
+
+
+log = logging.getLogger(__name__)
+
+
+class MinichartMaker( object ):
+    """ Contains helpers for creating the minichart. """
+
+    def extract_data_elements( self, lst ):
+        """ Pulls out the middle four elements for crude thumbnail display.
+            Called by SOMETHING. """
+        one_third = int( round( len(lst)/3 ) )
+        two_thirds = int( round( (2*len(lst))/3 ) )
+        thumb_lst = [ lst[0], lst[one_third], lst[two_thirds], lst[-1] ]
+        log.debug( u'in models.MinichartMaker.extract_data_elements(); list, `%s`; thumb_lst validity `%s`' % (lst, thumb_lst) )
+        return thumb_lst
+
+    # end class MinichartMaker
 
 
 def calculate_slope( x_list, y_list ):
