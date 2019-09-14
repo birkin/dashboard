@@ -14,8 +14,8 @@ from django.shortcuts import get_object_or_404, render
 log = logging.getLogger(__name__)
 # chart_maker = models.ChartMaker()
 minichart_maker = misc.MinichartMaker()
-shib_view_helper = models.ShibViewHelper()
-widget_helper = models.WidgetHelper()
+# shib_view_helper = models.ShibViewHelper()
+# widget_helper = models.WidgetHelper()
 widget_prepper = WidgetPrepper()
 
 
@@ -23,8 +23,13 @@ def info( request ):
     """ Returns info page. """
     log.debug( '\n\nstarting info()' )
     widget = Widget.objects.get( id=1 )
+    w_dct = widget.dct_ize()[0]
+    log.debug( f'widget-data, ```{pprint.pformat(w_dct)}```' )
+    log.debug( f'w_pk, `{w_dct["pk"]}`' )
+    log.debug( f'w_title, `{w_dct["fields"]["title"]}`' )
     trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
     trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
+    # log.debug(  )
     minichart_dcts = misc.extractMinichartData( eval(widget.data_points) )
     # minichart_values = [ minichart_tuples[0][1], minichart_tuples[1][1], minichart_tuples[2][1], minichart_tuples[3][1]  ]
     minichart_values = []

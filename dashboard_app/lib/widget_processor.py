@@ -49,6 +49,7 @@ class WidgetHelper( object ):
         # print '- widget_instance.data_points is: %s' % widget_instance.data_points
         # data = eval( widget_instance.data_points )
         data = json.loads( widget_instance.data_points )
+        log.debug( f'data, ```{data}```' )
         # print '- data is: %s' % data
         widget_instance.best_goal = int( widget_instance.best_goal ) # dunno why this was a unicode value; should've been an int; this fixes
 
@@ -63,24 +64,35 @@ class WidgetHelper( object ):
         # 'best' value
         best_value = None
         if widget_instance.best_goal == 1:  # best is higher
-          for the_tuple in data:
+          for dct in data:
+            element_value = next( iter(dct.values()) )  # way to get value from single-item-dct
             if best_value == None:
-              best_value = the_tuple[1]
-            if the_tuple[1] > best_value:
-              best_value = the_tuple[1]
+              best_value = element_value
+            if element_value > best_value:
+              best_value = element_value
         else:                               # best is lower
-          for the_tuple in data:
+          for dct in data:
+            element_value = next( iter(dct.values()) )
             if best_value == None:
-              best_value = the_tuple[1]
-            if the_tuple[1] < best_value:
-              best_value = the_tuple[1]
+              best_value = element_value
+            if element_value < best_value:
+              best_value = element_value
         widget_instance.best_value = best_value
+
+        # # 'best' value
         # best_value = None
-        # for the_tuple in data:
-        #   if best_value == None:
-        #     best_value = the_tuple[1]
-        #   if the_tuple[1] > best_value:
-        #     best_value = the_tuple[1]
+        # if widget_instance.best_goal == 1:  # best is higher
+        #   for the_tuple in data:
+        #     if best_value == None:
+        #       best_value = the_tuple[1]
+        #     if the_tuple[1] > best_value:
+        #       best_value = the_tuple[1]
+        # else:                               # best is lower
+        #   for the_tuple in data:
+        #     if best_value == None:
+        #       best_value = the_tuple[1]
+        #     if the_tuple[1] < best_value:
+        #       best_value = the_tuple[1]
         # widget_instance.best_value = best_value
 
         # current value

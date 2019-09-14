@@ -43,6 +43,7 @@ def extractMinichartData( the_list ):
   - Called by: views.info()
   - Purpose: to extract 4 datapoints for a small googlechartapi image.
   '''
+  log.debug( 'starting function' )
   list_length = len(the_list)
   if list_length < 5:
     return the_list
@@ -64,6 +65,7 @@ def extractMinichartData( the_list ):
   return_list.append( the_list[second_position] )
   return_list.append( the_list[third_position] )
   return_list.append( the_list[fourth_position] )
+  log.debug( f'return_list, ```{return_list}```' )
   # all set
   return return_list
 
