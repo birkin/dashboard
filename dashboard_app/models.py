@@ -4,6 +4,7 @@ import datetime, json, logging, os, pprint, itertools
 
 from dashboard_app.lib.widget_processor import WidgetHelper
 from django.conf import settings as project_settings
+from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponseRedirect
@@ -85,6 +86,11 @@ class Widget(models.Model):
             log.debug( u'EXCEPTION, %s' % e )
             self.data_points = 'INVALID_DATA: -->' + self.data_points + '<--'
             super(Widget, self).save() # Call the "real" save() method
+
+    def dct_ize( self ):
+        dct = serializers.serialize( 'python', [self], ensure_ascii=False )  # data = serializers.serialize("json", YourModel.objects.all())
+        return dct
+
 
     # def get_jdict( self, url ):
     #     """ Returns widget data in json-compatible dict. """
