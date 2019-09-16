@@ -1,4 +1,4 @@
-import json, logging
+import json, logging, pprint
 
 
 log = logging.getLogger(__name__)
@@ -27,6 +27,8 @@ class WidgetHelper( object ):
       '''
 
       try:
+        w_dct = widget_instance.dct_ize()[0]
+        log.debug( f'widget-data, ```{pprint.pformat(w_dct)}```' )
 
         # a bit of cleanup in case user entered data with returns
         # print '- widget_instance.data_points is: %s' % widget_instance.data_points
@@ -61,7 +63,7 @@ class WidgetHelper( object ):
         log.debug( f'value, `{value}`' )
         widget_instance.baseline_value = value
 
-        # 'best' value
+        ## 'best' value
         best_value = None
         if widget_instance.best_goal == 1:  # best is higher
           for dct in data:
@@ -95,19 +97,34 @@ class WidgetHelper( object ):
         #       best_value = the_tuple[1]
         # widget_instance.best_value = best_value
 
-        # current value
-        last_tuple = data[ len(data)-1 ]
-        widget_instance.current_value = last_tuple[1]
+        ## 'current' value
+        last_dct = data[-1]
+        last_dct_value = next( iter(last_dct.values()) )
+        widget_instance.current_value = last_dct_value
 
-        # trend value
-        next_to_last_tuple = data[ len(data)-2 ]
-        previous_value = next_to_last_tuple[1]
+        # # current value
+        # last_tuple = data[ len(data)-1 ]
+        # widget_instance.current_value = last_tuple[1]
+
+        ## 'trend value'
+        next_to_last_dct = data[-2]
+        previous_value = next( iter(next_to_last_dct.values()) )
         if widget_instance.current_value > previous_value:
           widget_instance.trend_direction = 1
         elif widget_instance.current_value == previous_value:
           widget_instance.trend_direction = 0
         else:
           widget_instance.trend_direction = -1
+
+        # # trend value
+        # next_to_last_tuple = data[ len(data)-2 ]
+        # previous_value = next_to_last_tuple[1]
+        # if widget_instance.current_value > previous_value:
+        #   widget_instance.trend_direction = 1
+        # elif widget_instance.current_value == previous_value:
+        #   widget_instance.trend_direction = 0
+        # else:
+        #   widget_instance.trend_direction = -1
 
         # trend color
         if widget_instance.trend_direction == 0:
