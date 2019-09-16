@@ -91,6 +91,26 @@ class Widget(models.Model):
         dct = serializers.serialize( 'python', [self], ensure_ascii=False )  # data = serializers.serialize("json", YourModel.objects.all())
         return dct
 
+    @property
+    def trend_image_name( self ):
+        try:
+            trend_direction_dict = { 1:'up', -1:'down', 0:'flat' }
+            trend_color_dict = { 1:'blue', -1:'red', 0:'blank' }
+            this_direction = self.trend_direction
+            this_color = self.trend_color
+            log.debug( f'this_direction, `{this_direction}`; this_color, `{this_direction}' )
+            if this_direction and this_color:
+                image_name = f'{trend_direction_dict[this_direction]}_{trend_color_dict[this_color]}.png'
+            else:
+                image_name = 'trend_image_name_unavailable'
+            log.debug( f'image_name, `{image_name}`' )
+
+            # image_name = f'{self.trend_direction}_{self.trend_color}.png'
+        except:
+            log.exception( 'problem getting trend-image-name; traceback follows' )
+            raise Exception( 'ugh' )
+        return image_name
+
 
     # def get_jdict( self, url ):
     #     """ Returns widget data in json-compatible dict. """

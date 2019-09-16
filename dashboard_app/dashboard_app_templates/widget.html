@@ -1,3 +1,4 @@
+{% load staticfiles %}
 {% load humanize %}
 
 <div class="widget_info">
@@ -82,8 +83,9 @@
 			<div class="current" title="'current' -- {{ widget.current_value_info }}">{{ widget.current_value|intcomma }}</div>
 
 			<div class="trend" title="'trend' -- {{ widget.trend_info }}">
-				<img src="{{media_directory}}images/{{ widget.trend_direction_text }}_{{ widget.trend_color_text }}.png"/>
-				<!-- <img src="{{media_directory}}images/{{ trend_direction }}_{{ trend_color }}.png"/> -->
+                <!-- OLD <img src="{{media_directory}}images/{{ trend_direction }}_{{ trend_color }}.png"/> -->
+				<!-- OLD RECENT <img src="{{media_directory}}images/{{ widget.trend_direction_text }}_{{ widget.trend_color_text }}.png"/> -->
+                <img src="{% static 'images/' %}{{ widget.trend_image_name }}"/>
 			</div>
 
 			<div class="more_info" title="'more info' -- Rough summary of data. Click for more detailed info. Widget contact is {{ widget.data_contact_name }}, at {{ widget.data_contact_email_address }}.">
