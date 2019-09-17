@@ -89,7 +89,8 @@
 			</div>
 
 			<div class="more_info" title="'more info' -- Rough summary of data. Click for more detailed info. Widget contact is {{ widget.data_contact_name }}, at {{ widget.data_contact_email_address }}.">
-				<a href="/dashboard/widget_detail/{{ widget.slug }}/">
+				<!-- <a href="/dashboard/widget_detail/{{ widget.slug }}/"> -->
+                    <a href="{% url 'widget_detail_url' widget.slug %}">
 					<img src="http://chart.apis.google.com/chart?cht=lc
 						&amp;chs=75x40
 						&amp;chd=t:{{ widget.minichart_percentages.0 }},{{ widget.minichart_percentages.1 }},{{ widget.minichart_percentages.2 }},{{ widget.minichart_percentages.3 }}
