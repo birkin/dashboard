@@ -21,18 +21,20 @@
 
 		#content_area {
 			/*position:relative;*/
+
 			}
 
-		#widget_area {
+		div#widget_area {
 			float:left;
 			width:360px;
 			margin-left:30px;
+            margin-top: 100px;
 			}
 
 		.widget_section {
 			/*position:relative;*/
 			width:355px;
-			margin-bottom:30px;
+			margin-bottom:50px;
 			}
 
 		.widget_info {
@@ -56,16 +58,16 @@
 
 	<div id="content_area">
 
-		<div id="widget_area">
+		<div id="widget_area" style="margin-top: 4em;">
 			{% for widget in widgets %}
-				<div class="widget_section">
+				<div class="widget_section" style="margin-bottom: 2em;">
 					{% include 'dashboard_app_templates/widget.html' %}
 					<p>Tags: {% for tag in widget.tags.all %}<a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</p>
 				</div> <!-- end div class="widget_section" -->
 			{% endfor %}
 		</div> <!-- end divid="widget_area" -->
 
-		<div id="tag_list">
+		<div id="tag_list" style="float: right; margin-top: -35em">
 			<p><a href="/dashboard/widgets/all/">( list all tags )</a></p>
 			{% for tag in tags %}
 				<p><a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a></p>
