@@ -5,7 +5,7 @@ dashboard info
 {% endblock page_title %}
 
 
-{% block custom_style %}
+{% block extra_css %}
     <style type="text/css">
 
         #widget_container {
@@ -14,6 +14,11 @@ dashboard info
 
             }
 
+/*        #widget_container {
+            postion:absolute;
+            margin-left:10px;
+            }
+*/
         #widget {
             position:relative;
             border-top:none;
@@ -84,7 +89,7 @@ dashboard info
             }
 
     </style>
-{% endblock custom_style %}
+{% endblock extra_css %}
 
 {% block head_title %}dashboard information{% endblock head_title %}
 
@@ -107,9 +112,13 @@ dashboard info
     </ul>
 
     <h3><a name="idea"></a>The dashboard idea</h3>
+
     <p>The purpose of the dashboard is two-fold.</p>
+
     <p>First, it aims to provide, at a glance, useful information about the flow of library data. The analogy to a car dashboard is apt. Just as a glance at the instruments on a car dashboard provides useful information about the car's speed, engine-temperature, and headlight-settings -- a glance at the 'widgets' that make up the Library dashboard provides useful information about the 'operation' of Josiah, easyBorrow, Illiad, etc.</p>
+
     <p>Second, the implementation of the Library dashboard is intended to make it very easy for data-creators and managers to build widgets that they themselves and others can use. An administrative form will allow any library staff-member to create a widget by filling out basic information, pasting in data-values in a specified format. From this information, all of the data shown below is created automatically.</p>
+
     <p>Of course, manually updating widgets is not ideal; the goal is to automate the population of widget data. However, there are many data-producers in the Library that currently create data manually. The dashboard offers the possibility to expose this data immediately and easily. ITS staff can then work on automating data updates.</p>
 
     <h3><a name="widgets"></a>Widgets</h3>
@@ -122,7 +131,7 @@ dashboard info
 
     <ul>
         <li><strong>The 'title'</strong><br/>
-            The title is simple. Most obviously, it lets you know that this widget provides an overview of Rockefeller Library checkouts. If you hover over the title, a text-box appears providing a some additional useful information: a) that the time-period is ten-years; b) that the widget's data is not fixed in time, but will be updated each year; and c) that all types of checkouts are included, implying the counts include laptops and projectors as well as books.<br/>
+            The title is simple. Most obviously, it lets you know that this widget provides an overview of easyBorrow requests. If you hover over the title, a text-box appears providing a some additional useful information: a) that the counts are by year; b) that the widget's data is not fixed in time, but will be updated each year; and c) a note about a change in the count definition in 2017.<br/>
             <br/>
         </li>
 

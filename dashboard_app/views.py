@@ -22,7 +22,7 @@ widget_prepper = WidgetPrepper()
 def info( request ):
     """ Returns info page. """
     log.debug( '\n\nstarting info()' )
-    widget = Widget.objects.get( id=1 )
+    widget = Widget.objects.get( slug='easyborrow-yearly-requests' )
     w_dct = widget.dct_ize()[0]
     log.debug( f'widget-data, ```{pprint.pformat(w_dct)}```' )
     log.debug( f'w_pk, `{w_dct["pk"]}`' )
