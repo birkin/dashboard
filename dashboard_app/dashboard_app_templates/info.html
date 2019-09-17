@@ -152,7 +152,7 @@ dashboard info
         </li>
 
         <li><strong>Also</strong><br/>
-            Note that each widget can be accessed by a human-readable url. In this case it is: <a href="http://library.brown.edu/dashboard/widget/{{ widget.slug }}/">http://library.brown.edu/dashboard/widget/{{ widget.slug }}/</a>. Also note that the resulting widget is an html-fragment that can easly be inserted into an existing html page, offering easy re-use.
+            Note that each widget can be accessed by a human-readable url. In this case it is: <!-- <a href="http://library.brown.edu/dashboard/widget/{{ widget.slug }}/"> --> <a href="{% url 'widget_detail_url' widget.slug %}">https://library.brown.edu/dashboard/widget/{{ widget.slug }}/</a>. Also note that the resulting widget is an html-fragment that can easly be inserted into an existing html page, offering easy re-use.
         </li>
 
     </ul>
@@ -198,7 +198,7 @@ dashboard info
 
     <h3><a name="widget_list"></a>Widget listing</h3>
 
-    <p>Currently under development, the list of all widgets can be found at <a href="http://library.brown.edu/dashboard/widgets/">http://library.brown.edu/dashboard/widgets/</a>. By default all widgets will be shown, but the selection will be able to be limited by selecting a tag from the tag-list column on the right.</p>
+    <p>Currently under development, the list of all widgets can be found at <!-- <a href="http://library.brown.edu/dashboard/widgets/"> --> <a href="{% url 'widgets_redirect_url' %}">https://library.brown.edu/dashboard/widgets/</a>. By default all widgets will be shown, but the selection will be able to be limited by selecting a tag from the tag-list column on the right.</p>
 
     <h3><a name="future"></a>Future visions</h3>
         <ul>
@@ -207,7 +207,7 @@ dashboard info
         </ul>
 
     <h3><a name="code"></a>Code</h3>
-    <p>Spurred on by Dale Askey's <a href="http://access2008.blog.lib.mcmaster.ca/program/#opensource">Access 2008 talk</a> and <a href="http://journal.code4lib.org/articles/527">code4lib journal article</a> challenging our community to be better at sharing code, <a href="http://bitbucket.org/bul/dashboard-app/">here</a> is the dashboard code.</p><br/>
+    <p>Spurred on by Dale Askey's <a href="http://access2008.blog.lib.mcmaster.ca/program/#opensource">Access 2008 talk</a> and <a href="http://journal.code4lib.org/articles/527">code4lib journal article</a> challenging our community to be better at sharing code, <a href="https://github.com/birkin/dashboard">here</a> is the dashboard code.</p><br/>
 
     <h3><a name="credit"></a>Credit</h3>
     <p>Thanks to the folk over at Brown's <a href="http://www.brown.edu/Administration/Institutional_Research/">Office of Institutional Research</a> for inspiring the Library's dashboard initiative.</p><br/>
