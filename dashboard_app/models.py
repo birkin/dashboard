@@ -2,6 +2,7 @@
 
 import datetime, json, logging, os, pprint, itertools
 
+from dashboard_app.lib import misc
 from dashboard_app.lib.widget_processor import WidgetHelper
 from django.conf import settings as project_settings
 from django.core import serializers
@@ -110,6 +111,23 @@ class Widget(models.Model):
             log.exception( 'problem getting trend-image-name; traceback follows' )
             raise Exception( 'ugh' )
         return image_name
+
+    @property
+    def minichart_percentages( self ):
+        minichart_dcts = misc.extractMinichartData( json.loads(self.data_points) )
+        minichart_values = []
+        for dct in minichart_dcts:
+            value = list( dct.items() )[0][1]
+            minichart_values.append( value )
+        minichart_percentages = misc.makeChartPercentages( minichart_values )
+        log.debug( f'minichart_percentages, `{minichart_percentages}`' )
+        return minichart_percentages
+
+    @property
+    def minichart_range( self ):
+        minichart_range = misc.makeChartRanges( self.minichart_percentages )
+        log.debug( f'minichart_range, `{minichart_range}`' )
+        return minichart_range
 
 
     # def get_jdict( self, url ):
