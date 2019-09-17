@@ -1,6 +1,6 @@
 {% extends "dashboard_app_templates/base.html" %}
 
-{% block custom_style %}
+{% block extra_css %}
 	<style type="text/css">
 
 		#widget_container {
@@ -9,10 +9,11 @@
 			}
 
 		#tag_list {
-			float:left;
-			/*float:right;*/
+			/*float:left;*/
+			float:right;
+            margin-right: 30em;
 			/*margin-left:400px;*/
-			/*margin-top:100px;*/
+			margin-top: 1em;
 			}
 
 		#orangecontent {
@@ -27,14 +28,14 @@
 		div#widget_area {
 			float:left;
 			width:360px;
-			margin-left:30px;
-            margin-top: 100px;
+			margin-left:10em;
+            margin-top: 1em;
 			}
 
 		.widget_section {
 			/*position:relative;*/
 			width:355px;
-			margin-bottom:50px;
+			margin-bottom: 2em;
 			}
 
 		.widget_info {
@@ -48,7 +49,7 @@
 			}	*/
 
 	</style>
-{% endblock custom_style %}
+{% endblock extra_css %}
 
 {% block head_title %} widget list{% endblock head_title %}
 
@@ -58,9 +59,9 @@
 
 	<div id="content_area">
 
-		<div id="widget_area" style="margin-top: 4em;">
+		<div id="widget_area"> <!-- style="margin-top: 4em; float: left" -->
 			{% for widget in widgets %}
-				<div class="widget_section" style="margin-bottom: 2em;">
+				<div class="widget_section">  <!-- style="margin-bottom: 2em;" -->
 					{% include 'dashboard_app_templates/widget.html' %}
 					<p>Tags: {% for tag in widget.tags.all %}
                         <!-- <a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a> -->
@@ -71,8 +72,11 @@
 			{% endfor %}
 		</div> <!-- end divid="widget_area" -->
 
-		<div id="tag_list" style="float: right; margin-top: -35em">
-			<p><a href="/dashboard/widgets/all/">( list all tags )</a></p>
+		<div id="tag_list">  <!-- style="clear; float: right;" -->
+			<p>
+                <!-- <a href="/dashboard/widgets/all/">( all )</a> -->
+                <a href="{% url 'widgets_url' 'all' %}">( all )</a>
+            </p>
 			{% for tag in tags %}
 				<p>
                     <!-- <a href="/dashboard/widgets/{{ tag.slug }}/">{{ tag.name }}</a> -->
